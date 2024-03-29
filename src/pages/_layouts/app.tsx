@@ -20,7 +20,7 @@ export function AppLayout() {
             </button>
             <input
               type="text"
-              className="w-full bg-transparent focus:outline-none"
+              className="w-full bg-transparent focus:outline-none text-xl"
               placeholder="Pesquisar por nome da ação, categoria da ação..."
             />
           </div>
