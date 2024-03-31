@@ -6,7 +6,7 @@ import Logo from './../../assets/logo.svg'
 
 export function AppLayout() {
   return (
-    <div className="h-screen bg-zinc-900 text-zinc-50">
+    <div className="bg-zinc-900 text-zinc-50">
       <header className="mb-28 flex items-center gap-16 px-20 py-8">
         <img className="h-9 w-10" src={Logo} alt="" />
 
@@ -46,7 +46,7 @@ export function AppLayout() {
 
         <Link
           to="donate"
-          className="flex items-center gap-2 rounded bg-blue-700 px-5 py-3 text-xl"
+          className="flex items-center gap-2 rounded bg-green-500 px-5 py-3 text-xl"
         >
           <Heart weight="fill" />
           DOE
