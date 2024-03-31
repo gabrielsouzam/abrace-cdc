@@ -1,15 +1,11 @@
-
 type Props = {
-    text: String;
+  text: string
 }
 
 export function Tag({ text }: Props) {
-    return (
-        <div className="flex items-center justify-center bg-zinc-300 rounded-3xl h-8 px-2">
-            <p className="text-zinc-950 text-sm font-medium">
-                {text}
-            </p>
-            
-        </div>
-    );
+  return (
+    <div className="flex h-8 items-center justify-center rounded-3xl bg-zinc-300 px-2">
+      <p className="text-sm font-medium text-zinc-950">{text}</p>
+    </div>
+  )
 }
