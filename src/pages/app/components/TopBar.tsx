@@ -1,10 +1,13 @@
-import { TopBar } from "../app/components/TopBar"
+import { Heart } from '@phosphor-icons/react'
+import { Search } from 'lucide-react'
+import { Link, Outlet } from 'react-router-dom'
+import Logo from '../../../assets/logo.svg'
 
-export function AppLayout() {
+export const TopBar = () => {
   return (
-    <div className="bg-zinc-900 text-zinc-50">
+    <div className="h-screen bg-zinc-900 text-zinc-50">
       <header className="mb-28 flex items-center gap-16 px-20 py-8">
-        <img className="h-9 w-10" src={Logo} alt="" />
+        <img className="w-24" src={Logo} alt="" />
 
         <form className="flex-1 text-zinc-400">
           <div
@@ -42,7 +45,7 @@ export function AppLayout() {
 
         <Link
           to="donate"
-          className="flex items-center gap-2 rounded bg-green-500 px-5 py-3 text-xl"
+          className="flex items-center gap-2 rounded bg-blue-700 px-5 py-3 text-xl"
         >
           <Heart weight="fill" />
           DOE
