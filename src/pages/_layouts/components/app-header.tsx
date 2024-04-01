@@ -6,9 +6,11 @@ import Logo from './../../../assets/logo.svg'
 
 export function AppHeader() {
   return (
-    <header className="mb-28 flex items-center gap-20 px-32 py-8">
-      <img className="24" src={Logo} alt="" />
-
+    <header className="mb-28 flex items-center gap-9 px-32 py-8">
+      <Link to='/'>
+        <img className="24" src={Logo} alt="Logo Casa da Caridade" />
+      </Link>
+      
       <form className="flex-1 text-zinc-400">
         <div
           className="flex items-center gap-4 rounded border-2 
