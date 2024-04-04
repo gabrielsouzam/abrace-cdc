@@ -1,12 +1,10 @@
+import { CaretDown } from '@phosphor-icons/react'
+import * as Select from '@radix-ui/react-select'
+import { CheckIcon } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
-import * as Select from '@radix-ui/react-select'
-import { CaretDown } from '@phosphor-icons/react'
-
-import { EventCard } from './components/eventCard'
-
 import Doacao from '../../../assets/Doacao.png'
-
+import { EventCard } from './components/eventCard'
 
 const event1 = {
   id: 1,
@@ -70,30 +68,89 @@ export function Events() {
     <>
       <Helmet title="Events" />
       <div>
-        <div className='flex flex-row px-20 justify-between'>
-          <h1 className='text-4xl text-zinc-50 font-semibold'>Eventos</h1>
+        <div className="flex flex-row justify-between px-20">
+          <h1 className="text-4xl font-semibold text-zinc-50">Eventos</h1>
 
-          <div className='flex flex-row justify-between gap-4 flex-wrap items-center'>
+          <div className="flex flex-row flex-wrap items-center justify-between gap-4">
             <Select.Root>
-              <Select.Trigger className='flex items-center justify-between rounded px-[12px] text-[16px] text-gray-400 h-[40px] w-[280px] bg-zinc-800'>
+              <Select.Trigger className="flex h-[40px] w-[280px] items-center justify-between rounded bg-zinc-800 px-[12px] text-[16px] text-gray-400">
                 <Select.Value placeholder="Categoria" />
                 <Select.Icon>
-                  <CaretDown className='text-zinc-50' size={14} weight='fill' />
+                  <CaretDown className="text-zinc-50" size={14} weight="fill" />
                 </Select.Icon>
               </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className=" overflow-hidden rounded-md bg-zinc-800 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                  <Select.Viewport className="p-1">
+                    <Select.Group>
+                      <Select.Label className="px-6 py-2 text-sm text-zinc-300">
+                        Categorias
+                      </Select.Label>
+                      <Select.Item
+                        value="Roupa"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Roupa</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                      <Select.Item
+                        value="Comida"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Comida</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                    </Select.Group>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
 
-              <Select.Trigger className='flex items-center justify-between rounded px-[12px] text-[16px] text-gray-400 h-[40px] w-[280px] bg-zinc-800'>
+            <Select.Root>
+              <Select.Trigger className="flex h-[40px] w-[280px] items-center justify-between rounded bg-zinc-800 px-[12px] text-[16px] text-gray-400">
                 <Select.Value placeholder="Bairro" />
                 <Select.Icon>
-                  <CaretDown className='text-zinc-50' size={14} weight='fill' />
+                  <CaretDown className="text-zinc-50" size={14} weight="fill" />
                 </Select.Icon>
               </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className=" overflow-hidden rounded-md bg-zinc-800 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                  <Select.Viewport className="p-1">
+                    <Select.Group>
+                      <Select.Label className="px-6 py-2 text-sm text-zinc-300">
+                        Bairros
+                      </Select.Label>
+                      <Select.Item
+                        value="Centro"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Centro</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                      <Select.Item
+                        value="Putiú"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Putiú</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                    </Select.Group>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
             </Select.Root>
           </div>
-
         </div>
 
-        <div className='grid grid-cols-3 gap-4 mt-10 mx-14'>
+        <div className="mx-14 mt-10 grid grid-cols-3 gap-4">
           {events.map((event) => {
             return (
               <EventCard
@@ -108,7 +165,6 @@ export function Events() {
             )
           })}
         </div>
-
       </div>
     </>
   )
