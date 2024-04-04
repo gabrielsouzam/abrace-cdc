@@ -10,6 +10,9 @@ export default {
         0.25: '0.0625rem',
         2.5: '0.625rem',
       },
+      borderWidth: {
+        1: '1px',
+      },
     },
   },
   plugins: [],
