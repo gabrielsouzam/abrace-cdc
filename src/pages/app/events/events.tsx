@@ -4,7 +4,7 @@ import { CheckIcon } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
 import Doacao from '../../../assets/Doacao.png'
-import { EventCard } from './components/eventCard'
+import { EventCard } from './components/event-card'
 
 const event1 = {
   id: 1,

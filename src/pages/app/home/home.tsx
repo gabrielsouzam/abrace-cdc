@@ -5,7 +5,7 @@ import Carousel from 'react-multi-carousel'
 
 import Doacao from '../../../assets/Doacao.png'
 import Humans from '../../../assets/Humans.svg'
-import { EventCard } from './components/eventCard'
+import { EventCard } from './components/event-card'
 
 const event1 = {
   id: 1,
