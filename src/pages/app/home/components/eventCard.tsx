@@ -3,7 +3,7 @@ import { ChevronRight, Clock, MapPin, User } from 'lucide-react'
 
 import { Tag } from './tag'
 
-type Props = {
+interface EventCardProps {
   image: string
   title: string
   subtitle: string
@@ -19,7 +19,7 @@ export function EventCard({
   author,
   locale,
   date,
-}: Props) {
+}: EventCardProps) {
   return (
     <div className="mb-2 w-[448px] rounded bg-zinc-50">
       <div className="relative">
