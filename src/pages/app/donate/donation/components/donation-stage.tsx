@@ -4,9 +4,13 @@ import { Line } from './line'
 
 interface DonationStageProps {
   stage: number
+  type?: 'monetary' | 'other'
 }
 
-export function DonationStage({ stage }: DonationStageProps) {
+export function DonationStage({
+  stage,
+  type = 'monetary',
+}: DonationStageProps) {
   return (
     <div className="mb-10 flex items-center space-x-2">
       <div className="flex items-center gap-2">
@@ -28,7 +32,15 @@ export function DonationStage({ stage }: DonationStageProps) {
         </span>
         <div className="flex flex-col">
           <span className="text-sm">Passo 2</span>
-          {stage > 1 ? <span className="text-xs">Qr code</span> : <></>}
+          {stage > 1 ? (
+            type === 'monetary' ? (
+              <span className="text-xs">Qr code</span>
+            ) : (
+              <span className="text-xs">Dados da doação</span>
+            )
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       <Line />
