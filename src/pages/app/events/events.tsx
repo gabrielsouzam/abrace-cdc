@@ -73,7 +73,7 @@ export function Events() {
 
           <div className="flex flex-row flex-wrap items-center justify-between gap-4">
             <Select.Root>
-              <Select.Trigger className="flex h-[40px] w-[280px] items-center justify-between rounded bg-zinc-800 px-[12px] text-[16px] text-gray-400">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded bg-zinc-800 px-3 text-base text-gray-400">
                 <Select.Value placeholder="Categoria" />
                 <Select.Icon>
                   <CaretDown className="text-zinc-50" size={14} weight="fill" />
@@ -111,7 +111,7 @@ export function Events() {
             </Select.Root>
 
             <Select.Root>
-              <Select.Trigger className="flex h-[40px] w-[280px] items-center justify-between rounded bg-zinc-800 px-[12px] text-[16px] text-gray-400">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded bg-zinc-800 px-3 text-base text-gray-400">
                 <Select.Value placeholder="Bairro" />
                 <Select.Icon>
                   <CaretDown className="text-zinc-50" size={14} weight="fill" />
