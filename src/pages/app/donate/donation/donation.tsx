@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import * as RadioGroup from '@radix-ui/react-radio-group'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
@@ -6,17 +7,22 @@ import { z } from 'zod'
 
 import { DonationStage } from './components/donation-stage'
 
-const donationForm = z.object({
+const donationFormSchema = z.object({
   typeDonation: z.enum(['DoacaoMonetaria', 'OutroTipo']),
 })
 
-type DonationForm = z.infer<typeof donationForm>
+type DonationFormData = z.infer<typeof donationFormSchema>
 
 export function Donation() {
   const navigate = useNavigate()
-  const { handleSubmit, control } = useForm<DonationForm>()
+  const { handleSubmit, control } = useForm<DonationFormData>({
+    resolver: zodResolver(donationFormSchema),
+    defaultValues: {
+      typeDonation: 'DoacaoMonetaria',
+    },
+  })
 
-  function handleSelectDonationType(data: DonationForm) {
+  function handleSelectDonationType(data: DonationFormData) {
     console.log(data)
 
     if (data.typeDonation === 'DoacaoMonetaria') {
@@ -45,6 +51,7 @@ export function Donation() {
                   className="mb-10 flex gap-8"
                   onValueChange={field.onChange}
                   value={field.value}
+                  defaultValue="DoacaoMonetaria"
                 >
                   <div className="flex items-center gap-2 ">
                     <RadioGroup.Item
