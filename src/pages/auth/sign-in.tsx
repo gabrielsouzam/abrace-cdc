@@ -6,9 +6,7 @@ import { z } from 'zod'
 
 const signInForm = z.object({
   email: z.string().email('Formato de e-mail inválido'),
-  password: z
-    .string()
-    .min(6, 'A senha teve ter no mínimo caracteres no mínimo'),
+  password: z.string().min(6, 'A senha teve ter no mínimo 6 caracteres'),
 })
 
 type SignInForm = z.infer<typeof signInForm>
