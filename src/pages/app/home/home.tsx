@@ -79,17 +79,15 @@ export function Home() {
   return (
     <>
       <Helmet title="Home" />
-      <div>
+      <div className="bg-[url('../../../assets/Vector.svg')]">
         <div className="ml-20 max-w-lg">
-          <div>
-            <h1 className="text-3xl font-medium text-zinc-50">
-              Bem vindo(a) a Casa da Caridade
-            </h1>
+          <h1 className="text-3xl font-medium text-zinc-50">
+            Bem vindo(a) a Casa da Caridade
+          </h1>
 
-            <p className="mt-2 text-base font-medium text-zinc-400">
-              Conectando quem tem à quem precisa.
-            </p>
-          </div>
+          <p className="mt-2 text-base font-medium text-zinc-400">
+            Conectando quem tem à quem precisa.
+          </p>
 
           <div className="mt-6">
             <p className="text-start text-base font-normal text-zinc-50">
@@ -105,13 +103,11 @@ export function Home() {
           </div>
         </div>
 
-        <div>
-          <img
-            src={Humans}
-            alt="Pessosas fazendo doações"
-            className="-mt-56 w-full"
-          />
-        </div>
+        <img
+          src={Humans}
+          alt="Pessosas fazendo doações"
+          className="-mt-56 w-full"
+        />
       </div>
 
       <div className="ml-20 mt-16">
@@ -121,7 +117,7 @@ export function Home() {
         </p>
       </div>
 
-      <Carousel responsive={responsive}>
+      <Carousel responsive={responsive} showDots={true}>
         {events.map((event) => {
           return (
             <EventCard
