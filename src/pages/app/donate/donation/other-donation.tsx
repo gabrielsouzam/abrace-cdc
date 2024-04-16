@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Info } from '@phosphor-icons/react'
 import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
@@ -8,7 +9,7 @@ import { z } from 'zod'
 import { DonationStage } from './components/donation-stage'
 
 const otherDonationSchema = z.object({
-  category: z.string(),
+  category: z.enum(['Roupa', 'Alimento', 'Moradia']),
   description: z.string().optional(),
 })
 
@@ -16,7 +17,14 @@ type OtherDonationForm = z.infer<typeof otherDonationSchema>
 
 export function OtherDonation() {
   const navigate = useNavigate()
-  const { handleSubmit, register, control } = useForm<OtherDonationForm>()
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+  } = useForm<OtherDonationForm>({
+    resolver: zodResolver(otherDonationSchema),
+  })
 
   function handleOtherDonation(data: OtherDonationForm) {
     console.log(data)
@@ -39,13 +47,17 @@ export function OtherDonation() {
             return (
               <Select.Root onValueChange={field.onChange} value={field.value}>
                 <Select.Trigger
-                  className="mb-6 inline-flex w-1/2 items-center justify-between gap-1 rounded border-2 border-solid 
+                  data-error={!!errors.category}
+                  className="mb-2 inline-flex w-1/2 items-center justify-between gap-1 rounded border-2 border-solid 
                 border-zinc-400 bg-transparent px-4 py-3 text-sm outline-none focus:shadow-[0_0_0_1px]
-                focus:shadow-white data-[placeholder]:text-gray-400"
+                focus:shadow-white data-[error=true]:border-red-500 data-[placeholder]:text-gray-400"
                   aria-label="Food"
                 >
                   <Select.Value placeholder="Seleciona uma categoria" />
-                  <Select.Icon className="text-zinc-50">
+                  <Select.Icon
+                    data-error={!!errors.category}
+                    className="text-zinc-50 data-[error=true]:text-red-500"
+                  >
                     <ChevronDownIcon />
                   </Select.Icon>
                 </Select.Trigger>
@@ -97,7 +109,11 @@ export function OtherDonation() {
           }}
         />
 
-        <span className="relative left-2 top-2 inline text-xs">
+        {errors.category && (
+          <span className="text-sm text-red-500">Este campo é obrigatório</span>
+        )}
+
+        <span className="relative left-2 top-2 mt-4 inline text-xs">
           <span className="bg-zinc-900 pl-1 text-zinc-100">Descrição</span>
           <span className="bg-zinc-900 pr-1 text-zinc-400">(opcional)</span>
         </span>
