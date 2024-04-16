@@ -1,85 +1,15 @@
 import 'react-multi-carousel/lib/styles.css'
 
 import { Helmet } from 'react-helmet-async'
-import Carousel from 'react-multi-carousel'
 
-import Doacao from '../../../assets/Doacao.png'
 import Humans from '../../../assets/Humans.svg'
-import { EventCard } from './components/event-card'
-
-const event1 = {
-  id: 1,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '4 FEV 2024 16H',
-}
-
-const event2 = {
-  id: 2,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '15 FEV 2024 16H',
-}
-
-const event3 = {
-  id: 3,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '22 FEV 2024 16H',
-}
-
-const event4 = {
-  id: 4,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '3 MAR 2024 16H',
-}
-
-const event5 = {
-  id: 5,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '18 MAR 2024 16H',
-}
+import { Slider } from './components/slider'
 
 export function Home() {
-  const events = [event1, event2, event3, event4, event5]
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 3,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-  }
-
   return (
     <>
       <Helmet title="Home" />
-      <div className="bg-[url('../../../assets/Vector.svg')]">
+      <div>
         <div className="ml-20 max-w-lg">
           <h1 className="text-3xl font-medium text-zinc-50">
             Bem vindo(a) a Casa da Caridade
@@ -117,21 +47,7 @@ export function Home() {
         </p>
       </div>
 
-      <Carousel responsive={responsive} showDots={true}>
-        {events.map((event) => {
-          return (
-            <EventCard
-              image={Doacao}
-              title={event.title}
-              subtitle={event.subtitle}
-              author={event.author}
-              locale={event.locale}
-              date={event.date}
-              key={event.id}
-            />
-          )
-        })}
-      </Carousel>
+      <Slider />
     </>
   )
 }
