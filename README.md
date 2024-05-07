@@ -30,6 +30,8 @@ Ferramentas:
   - Trello: Ferramenta de organização de tarefas em quadros.
 - Prototipagem:
   - Figma: Ferramenta de design e prototipagem de interfaces web.
+- Banco de Dados:
+  - Projeto: https://github.com/robsonad07/abrace-cdc-API
 
 Prototipação: [Link para ferramenta de prototipação](https://www.figma.com/file/ir28aSrCpIUOdtZRSoTmrC/PI2?type=design&node-id=0%3A1&mode=design&t=wLEP2iJ07hnt0EXy-1)
 
