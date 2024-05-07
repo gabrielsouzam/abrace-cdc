@@ -37,6 +37,8 @@ Requisitos: [Link para ferramenta de requisitos](https://docs.google.com/documen
 
 Gestão de Projeto: [Link para ferramenta de gestão de projeto](https://trello.com/b/euCyOXC6/projeto-casa-da-caridade-web)
 
+Boas práticas: [Link para documento com descrição de boas práticas](https://docs.google.com/document/d/1w5UI0s8UOU9bIPHwb2VRlbTBs08QMvWOVglLVyhUJLc/edit?usp=sharing)
+
 Licença:
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
