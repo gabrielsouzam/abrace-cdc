@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import Carousel from 'react-multi-carousel'
 
 import Doacao from '../../../assets/Doacao.png'
-import Humans from '../../../assets/Humans.svg'
+import Humans from '../../../assets/humans.svg'
 import { EventCard } from './components/event-card'
 
 const event1 = {
@@ -79,7 +79,7 @@ export function Home() {
   return (
     <>
       <Helmet title="Home" />
-      <div>
+      <div className="relative flex w-full justify-between bg-[url('assets/background-home.svg')] bg-cover bg-no-repeat px-20 pb-14">
         <div className="ml-20 max-w-lg">
           <div>
             <h1 className="text-3xl font-medium text-zinc-50">
@@ -105,13 +105,11 @@ export function Home() {
           </div>
         </div>
 
-        <div>
-          <img
-            src={Humans}
-            alt="Pessosas fazendo doações"
-            className="-mt-56 w-full"
-          />
-        </div>
+        <img
+          src={Humans}
+          alt="Pessosas fazendo doações"
+          className="relative top-[-2rem] mr-11"
+        />
       </div>
 
       <div className="ml-20 mt-16">
