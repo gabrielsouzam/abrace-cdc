@@ -33,7 +33,7 @@ export function OtherDonation() {
   }
 
   return (
-    <div>
+    <div className="pb-20">
       <DonationStage stage={2} type="other" />
 
       <form
