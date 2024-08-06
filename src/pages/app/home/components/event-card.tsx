@@ -1,4 +1,4 @@
-import { Star, ThumbsUp } from '@phosphor-icons/react'
+import { ThumbsUp } from '@phosphor-icons/react'
 import { ChevronRight, Clock, MapPin, User } from 'lucide-react'
 
 import { Tag } from './tag'
@@ -66,15 +66,9 @@ export function EventCard({
           <ChevronRight color="#FAFAFA" size={20} />
         </button>
 
-        <div className="flex flex-row">
-          <button className="mr-4 flex h-10 w-10 items-center justify-center rounded-full bg-zinc-300">
-            <ThumbsUp color="#71717A" size={24} weight="fill" />
-          </button>
-
-          <button className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-300">
-            <Star color="#71717A" size={24} weight="fill" />
-          </button>
-        </div>
+        <button className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-300">
+          <ThumbsUp color="#71717A" size={24} weight="fill" />
+        </button>
       </div>
     </div>
   )

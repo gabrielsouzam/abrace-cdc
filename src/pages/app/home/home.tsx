@@ -2,14 +2,15 @@ import 'react-multi-carousel/lib/styles.css'
 
 import { Helmet } from 'react-helmet-async'
 
-import Humans from '../../../assets/Humans.svg'
+import HumanitarianHome from '../../../assets/HumanitarianHome.svg'
+import ImageHome from '../../../assets/ImageHome.svg'
 import { Slider } from './components/slider'
 
 export function Home() {
   return (
     <>
       <Helmet title="Home" />
-      <div>
+      <div className="flex items-center gap-36">
         <div className="ml-20 max-w-lg">
           <h1 className="text-3xl font-medium text-zinc-50">
             Bem vindo(a) a Casa da Caridade
@@ -32,13 +33,15 @@ export function Home() {
             </p>
           </div>
         </div>
-
-        <img
-          src={Humans}
-          alt="Pessosas fazendo doações"
-          className="-mt-56 w-full"
-        />
+        <aside>
+          <img
+            src={HumanitarianHome}
+            alt="Pessosas fazendo doações"
+            className=""
+          />
+        </aside>
       </div>
+      <img src={ImageHome} alt="" className="h-full w-full" />
 
       <div className="ml-20 mt-16">
         <h1 className="text-3xl font-medium text-zinc-50">Últimos Eventos</h1>
