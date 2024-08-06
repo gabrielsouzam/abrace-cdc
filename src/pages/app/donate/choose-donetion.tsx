@@ -22,7 +22,7 @@ export function ChooseDonation() {
             <span className="font-semibold">Casa de caridade</span>
           </Link>
           <Link
-            to=""
+            to="/donate/other"
             className="flex h-50 w-50 flex-col items-center justify-center gap-8 rounded bg-zinc-800 "
           >
             <Heart weight="fill" className="h-16 w-18 text-green-500" />
