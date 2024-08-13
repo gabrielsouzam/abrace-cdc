@@ -49,28 +49,28 @@ export function OtherDonation() {
                 <Select.Trigger
                   data-error={!!errors.category}
                   className="mb-2 inline-flex w-1/2 items-center justify-between gap-1 rounded border-2 border-solid 
-                border-zinc-400 bg-transparent px-4 py-3 text-sm outline-none focus:shadow-[0_0_0_1px]
+                border-zinc-400 bg-transparent px-4 py-3 text-sm text-zinc-900 outline-none focus:shadow-[0_0_0_1px]
                 focus:shadow-white data-[error=true]:border-red-500 data-[placeholder]:text-gray-400"
                   aria-label="Food"
                 >
                   <Select.Value placeholder="Seleciona uma categoria" />
                   <Select.Icon
                     data-error={!!errors.category}
-                    className="text-zinc-50 data-[error=true]:text-red-500"
+                    className="text-zinc-900 data-[error=true]:text-red-500"
                   >
-                    <ChevronDownIcon />
+                    <ChevronDownIcon className="text-zinc-400" />
                   </Select.Icon>
                 </Select.Trigger>
                 <Select.Portal>
-                  <Select.Content className=" overflow-hidden rounded-md bg-zinc-800 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                  <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
                     <Select.Viewport className="p-1">
                       <Select.Group>
-                        <Select.Label className="px-6 py-2 text-sm text-zinc-300">
+                        <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                           Categorias
                         </Select.Label>
                         <Select.Item
                           value="Roupa"
-                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                         >
                           <Select.ItemText>Roupa</Select.ItemText>
                           <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -79,7 +79,7 @@ export function OtherDonation() {
                         </Select.Item>
                         <Select.Item
                           value="Alimento"
-                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                         >
                           <Select.ItemText>Alimento</Select.ItemText>
                           <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -88,7 +88,7 @@ export function OtherDonation() {
                         </Select.Item>
                         <Select.Item
                           value="Moradia"
-                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                          className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                         >
                           <Select.ItemText>Moradia</Select.ItemText>
                           <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -114,13 +114,13 @@ export function OtherDonation() {
         )}
 
         <span className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-900 pl-1 text-zinc-100">Descrição</span>
-          <span className="bg-zinc-900 pr-1 text-zinc-400">(opcional)</span>
+          <span className="bg-zinc-50 pl-1 text-zinc-900">Descrição</span>
+          <span className="bg-zinc-50 pr-1 text-zinc-400">(opcional)</span>
         </span>
 
         <div className="mb-10 flex h-36 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
           <textarea
-            className="h-full w-full resize-none overflow-hidden bg-transparent text-sm outline-none"
+            className="h-full w-full resize-none overflow-hidden bg-transparent text-sm text-zinc-900 outline-none"
             {...register('description')}
           />
         </div>

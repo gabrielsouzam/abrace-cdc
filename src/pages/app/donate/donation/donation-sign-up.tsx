@@ -35,7 +35,7 @@ export function DonationSignUp() {
       <Helmet title="Cadastrar" />
       <DonationStage stage={1} />
 
-      <h1 className="pb-6 font-semibold">Seus dados</h1>
+      <h1 className="pb-6 font-semibold text-zinc-900">Seus dados</h1>
       <form onSubmit={handleSubmit(handleInsertDataDonation)}>
         <input
           type="text"
@@ -60,7 +60,9 @@ export function DonationSignUp() {
           />
         </div>
 
-        <h1 className="mb-2.5 text-left font-semibold">Tipo de doação</h1>
+        <h1 className="mb-2.5 text-left font-semibold text-zinc-900">
+          Tipo de doação
+        </h1>
 
         <Controller
           control={control}
@@ -80,7 +82,9 @@ export function DonationSignUp() {
                   >
                     <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2.5 after:w-2.5 after:rounded-[50%] after:bg-green-500 after:content-['']" />
                   </RadioGroup.Item>
-                  <label htmlFor="r1">Doação monetária</label>
+                  <label htmlFor="r1" className="text-zinc-900">
+                    Doação monetária
+                  </label>
                 </div>
 
                 <div className="flex items-center gap-2 ">
@@ -92,7 +96,9 @@ export function DonationSignUp() {
                   >
                     <RadioGroup.Indicator className="relative flex h-full w-full items-center justify-center after:block after:h-2.5 after:w-2.5 after:rounded-[50%] after:bg-green-500 after:content-['']" />
                   </RadioGroup.Item>
-                  <label htmlFor="r2">Outro tipo de doação</label>
+                  <label htmlFor="r2" className="text-zinc-900">
+                    Outro tipo de doação
+                  </label>
                 </div>
               </RadioGroup.Root>
             )

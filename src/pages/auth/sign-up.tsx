@@ -29,7 +29,7 @@ export function SignUp() {
     <>
       <Helmet title="Cadastrar" />
       <div className="flex flex-col justify-center px-24">
-        <h1 className="text-2xl font-normal text-zinc-50">Cadastrar</h1>
+        <h1 className="text-2xl font-normal text-zinc-900">Cadastrar</h1>
         <span className="mb-9 text-sm text-zinc-400">
           Conecte-se para fazer a diferença
         </span>
@@ -39,7 +39,7 @@ export function SignUp() {
             data-error={!!errors.name}
             type="text"
             placeholder="Nome completo"
-            className="mb-2 w-full rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-50 data-[error=true]:border-red-500"
+            className="mb-2 w-full rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-900 data-[error=true]:border-red-500"
             {...register('name')}
           />
 
@@ -53,7 +53,7 @@ export function SignUp() {
             data-error={!!errors.email}
             type="email"
             placeholder="Email"
-            className="mb-2 mt-2 w-full rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-50 data-[error=true]:border-red-500"
+            className="mb-2 mt-2 w-full rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-900 data-[error=true]:border-red-500"
             {...register('email')}
           />
 
@@ -67,7 +67,7 @@ export function SignUp() {
             data-error={!!errors.password}
             type="password"
             placeholder="Senha"
-            className="mb-2 mt-2 rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-50 data-[error=true]:border-red-500"
+            className="mb-2 mt-2 rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-900 data-[error=true]:border-red-500"
             {...register('password')}
           />
 
