@@ -69,26 +69,30 @@ export function Events() {
       <Helmet title="Events" />
       <div>
         <div className="flex flex-row justify-between px-20">
-          <h1 className="text-4xl font-semibold text-zinc-50">Eventos</h1>
+          <h1 className="text-4xl font-semibold text-zinc-900">Eventos</h1>
 
           <div className="flex flex-row flex-wrap items-center justify-between gap-4">
             <Select.Root>
-              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded bg-zinc-800 px-3 text-base text-gray-400">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Categoria" />
                 <Select.Icon>
-                  <CaretDown className="text-zinc-50" size={14} weight="fill" />
+                  <CaretDown
+                    className="text-zinc-500"
+                    size={14}
+                    weight="fill"
+                  />
                 </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content className=" overflow-hidden rounded-md bg-zinc-800 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
                   <Select.Viewport className="p-1">
                     <Select.Group>
-                      <Select.Label className="px-6 py-2 text-sm text-zinc-300">
+                      <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                         Categorias
                       </Select.Label>
                       <Select.Item
                         value="Roupa"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                       >
                         <Select.ItemText>Roupa</Select.ItemText>
                         <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -97,7 +101,7 @@ export function Events() {
                       </Select.Item>
                       <Select.Item
                         value="Comida"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                       >
                         <Select.ItemText>Comida</Select.ItemText>
                         <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -111,22 +115,26 @@ export function Events() {
             </Select.Root>
 
             <Select.Root>
-              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded bg-zinc-800 px-3 text-base text-gray-400">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Bairro" />
                 <Select.Icon>
-                  <CaretDown className="text-zinc-50" size={14} weight="fill" />
+                  <CaretDown
+                    className="text-zinc-500"
+                    size={14}
+                    weight="fill"
+                  />
                 </Select.Icon>
               </Select.Trigger>
               <Select.Portal>
-                <Select.Content className=" overflow-hidden rounded-md bg-zinc-800 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
                   <Select.Viewport className="p-1">
                     <Select.Group>
-                      <Select.Label className="px-6 py-2 text-sm text-zinc-300">
+                      <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                         Bairros
                       </Select.Label>
                       <Select.Item
                         value="Centro"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                       >
                         <Select.ItemText>Centro</Select.ItemText>
                         <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
@@ -135,7 +143,7 @@ export function Events() {
                       </Select.Item>
                       <Select.Item
                         value="Putiú"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-100 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-600 data-[disabled]:text-zinc-600 data-[highlighted]:text-zinc-300 data-[highlighted]:outline-none"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                       >
                         <Select.ItemText>Putiú</Select.ItemText>
                         <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">

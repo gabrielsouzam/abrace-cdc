@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import Carousel from 'react-multi-carousel'
 
 import Doacao from '../../../assets/Doacao.png'
-import Humans from '../../../assets/humans.svg'
+import Humans from '../../../assets/Humans.svg'
 import { EventCard } from './components/event-card'
 
 const event1 = {
@@ -80,9 +80,9 @@ export function Home() {
     <>
       <Helmet title="Home" />
       <div className="relative flex w-full justify-between bg-[url('assets/background-home.svg')] bg-cover bg-no-repeat px-20 pb-14">
-        <div className="ml-20 max-w-lg">
+        <div className="max-w-lg">
           <div>
-            <h1 className="text-3xl font-medium text-zinc-50">
+            <h1 className="text-3xl font-medium text-zinc-900">
               Bem vindo(a) a Casa da Caridade
             </h1>
 
@@ -92,7 +92,7 @@ export function Home() {
           </div>
 
           <div className="mt-6">
-            <p className="text-start text-base font-normal text-zinc-50">
+            <p className="text-start text-base font-normal text-zinc-900">
               Somos uma plataforma inovadora que une voluntários, doadores e
               organizações em uma
               <span className="m-2 text-base font-bold text-green-700">
@@ -113,7 +113,7 @@ export function Home() {
       </div>
 
       <div className="ml-20 mt-16">
-        <h1 className="text-3xl font-medium text-zinc-50">Últimos Eventos</h1>
+        <h1 className="text-3xl font-medium text-zinc-900">Últimos Eventos</h1>
         <p className="mb-8 mt-2 text-base font-medium text-zinc-400">
           Fique por dentro dos últimos Eventos postados pela gente.
         </p>

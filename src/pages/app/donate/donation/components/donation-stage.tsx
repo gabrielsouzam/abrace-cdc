@@ -18,8 +18,8 @@ export function DonationStage({
           {stage > 1 ? <Check className="h-4 w-4" /> : 1}
         </span>
         <div className="flex flex-col">
-          <span className="text-sm">Passo 1</span>
-          <span className="text-xs">Informações</span>
+          <span className="text-sm text-zinc-900">Passo 1</span>
+          <span className="text-xs text-zinc-900">Informações</span>
         </div>
       </div>
       <Line />
@@ -31,12 +31,12 @@ export function DonationStage({
           {stage > 2 ? <Check className="h-4 w-4" /> : 2}
         </span>
         <div className="flex flex-col">
-          <span className="text-sm">Passo 2</span>
+          <span className="text-sm text-zinc-900">Passo 2</span>
           {stage > 1 ? (
             type === 'monetary' ? (
-              <span className="text-xs">Qr code</span>
+              <span className="text-xs text-zinc-900">Qr code</span>
             ) : (
-              <span className="text-xs">Dados da doação</span>
+              <span className="text-xs text-zinc-900">Dados da doação</span>
             )
           ) : (
             <></>
@@ -52,8 +52,12 @@ export function DonationStage({
           {stage > 2 ? <Check className="h-4 w-4" /> : 3}
         </span>
         <div className="flex flex-col">
-          <span className="text-sm">Passo 3</span>
-          {stage > 2 ? <span className="text-xs">Final</span> : <></>}
+          <span className="text-sm text-zinc-900">Passo 3</span>
+          {stage > 2 ? (
+            <span className="text-xs text-zinc-900">Final</span>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

@@ -12,10 +12,12 @@ export function DonationSuccess() {
 
       <div className="mb-18 flex flex-col items-center">
         <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-green-600">
-          <Check className="h-8 w-8 text-zinc-800" />
+          <Check className="h-8 w-8 text-zinc-50" />
         </div>
 
-        <h1 className="mb-2 text-xl font-semibold">Sua doação foi aprovada!</h1>
+        <h1 className="mb-2 text-xl font-semibold text-zinc-900">
+          Sua doação foi aprovada!
+        </h1>
         <span className="text-sm text-zinc-400">
           Obrigado por fazer a diferença
         </span>
