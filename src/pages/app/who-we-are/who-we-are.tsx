@@ -13,7 +13,7 @@ const colaboradores = [
   {
     nome: 'Henrique Freitas',
     cargo: 'Diretor Geral',
-    imagem: colaborador, // Caminho da imagem do colaborador
+    imagem: colaborador,
     descricao: 'Responsável pela gestão geral da organização.',
   },
   {
@@ -198,14 +198,14 @@ export function WhoWeAre() {
           Nossos Contatos
         </h1>
       </div>
-      <div className="ml-1 mt-10 flex items-start space-x-8 justify-center" > 
-        
+      <div className="ml-1 mt-10 flex items-start space-x-8 justify-center" >
+
         <a href="https://wa.me/5599999999999" target="_blank" rel="noopener noreferrer">
           <img src={whatsapp} alt="Contato WhatsApp" className="w-50 h-16" />
         </a>
-        
+
         <a href="https://www.instagram.com/casadacaridadequixada?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
-          <img src={instagram} alt="Contato Instagram" className="w-50 h-16" /> 
+          <img src={instagram} alt="Contato Instagram" className="w-50 h-16" />
         </a>
       </div>
     </>
