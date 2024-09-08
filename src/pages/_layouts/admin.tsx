@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom'
 
-import { AppHeader } from './components/app-header'
+import { AppHeaderAdmin } from './components/app-header-admin'
 
-export function AppLayout() {
+export function AdminLayout() {
   return (
     <div className=" text-zinc-900 ">
-      <AppHeader />
+      <AppHeaderAdmin />
       <Outlet />
     </div>
   )

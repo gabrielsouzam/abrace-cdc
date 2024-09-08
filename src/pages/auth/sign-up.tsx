@@ -1,11 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+
+import { api } from '../../lib/axios'
 
 const signUpForm = z.object({
   name: z.string().min(1, 'O campo nome é obrigatorio'),
+  phone: z.string().min(1, 'O campo telefone é obrigatorio'),
   email: z.string().email('Formato de e-mail inválido'),
   password: z.string().min(6, 'A senha teve ter no mínimo 6 caracteres'),
 })
@@ -13,6 +16,8 @@ const signUpForm = z.object({
 type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -21,8 +26,15 @@ export function SignUp() {
     resolver: zodResolver(signUpForm),
   })
 
-  function handleSignUp(data: SignUpForm) {
-    console.log(data)
+  async function handleSignUp(data: SignUpForm) {
+    await api.post('/auth/register-user', {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+    })
+
+    navigate('/sign-in')
   }
 
   return (
@@ -46,6 +58,20 @@ export function SignUp() {
           {errors.name && (
             <span className="mb-4 text-sm text-red-500">
               {errors.name.message}
+            </span>
+          )}
+
+          <input
+            data-error={!!errors.phone}
+            type="text"
+            placeholder="Telefone"
+            className="mb-2 w-full rounded border-1 border-solid border-zinc-400 bg-transparent px-4 py-4 text-zinc-900 data-[error=true]:border-red-500"
+            {...register('phone')}
+          />
+
+          {errors.phone && (
+            <span className="mb-4 text-sm text-red-500">
+              {errors.phone.message}
             </span>
           )}
 
