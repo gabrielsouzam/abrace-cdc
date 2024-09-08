@@ -1,10 +1,12 @@
 import { CaretRight, Heart, ThumbsUp } from '@phosphor-icons/react'
+import { useNavigate } from 'react-router-dom'
 
 import cardImage from './../../../../assets/donation-card-image.svg'
 import { LineLevel } from './line-level'
 
 interface ActionCardProps {
   title: string
+  id: string
   subtile: string
   category: string
   actionImage: string | null
@@ -15,11 +17,17 @@ export function ActionCard({
   subtile,
   category,
   actionImage,
+  id,
 }: ActionCardProps) {
+  const navigate = useNavigate()
   let urlImage = cardImage
 
   if (actionImage) {
     urlImage = actionImage
+  }
+
+  function handleViewActionInfo() {
+    navigate(`/action/${id}`)
   }
 
   return (
@@ -48,7 +56,10 @@ export function ActionCard({
         </div>
 
         <div className="flex justify-end gap-2">
-          <button className="flex items-center justify-center gap-1 rounded border-1 border-green-700 bg-transparent p-2 text-sm text-green-700">
+          <button
+            onClick={handleViewActionInfo}
+            className="flex items-center justify-center gap-1 rounded border-1 border-green-700 bg-transparent p-2 text-sm text-green-700"
+          >
             <span>VER MAIS</span> <CaretRight size={12} />
           </button>
           <button className=" flex items-center justify-center gap-1 rounded bg-green-700 p-2 text-sm text-zinc-50">
