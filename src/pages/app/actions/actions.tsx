@@ -3,40 +3,7 @@ import { Helmet } from 'react-helmet-async'
 
 import { api } from '../../../lib/axios'
 import { ActionCard } from './components/action-card'
-
-interface Action {
-  id: string
-  title: string
-  subtitle: string
-  addressEntity: {
-    cep: string
-    city: string
-    complement: string
-    id: string
-    number: number
-    road: string
-  }
-  categoryEntity: {
-    description: string
-    id: string
-    name: string
-  }
-  organizerEntity: {
-    id: string
-    name: string
-    email: string
-    cellphone: string
-  }
-  registers: {
-    id: string
-    urlImage: string
-    email: string
-    description: string
-  }[]
-  dateTime: string
-  description: string
-  duration: string
-}
+import { Action } from './types/Action'
 
 export function Actions() {
   const [actions, setActions] = useState<Action[]>()
@@ -77,6 +44,7 @@ export function Actions() {
                 title={action.title}
                 subtile={action.subtitle}
                 category={action.categoryEntity.name}
+                id={action.id}
                 actionImage={
                   action.registers.length > 0 && action.registers[0].urlImage
                     ? action.registers[0].urlImage
