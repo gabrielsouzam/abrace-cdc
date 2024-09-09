@@ -1,4 +1,5 @@
 import { Star, ThumbsUp } from '@phosphor-icons/react'
+import { format } from 'date-fns'
 import { ChevronRight, Clock, MapPin, User } from 'lucide-react'
 
 import { Tag } from './tag'
@@ -10,6 +11,7 @@ interface EventCardProps {
   author: string
   locale: string
   date: string
+  tag: string
 }
 
 export function EventCard({
@@ -19,7 +21,9 @@ export function EventCard({
   author,
   locale,
   date,
+  tag,
 }: EventCardProps) {
+  const dateFormated = format(new Date(date), 'dd/MM/yyyy HH:mm')
   return (
     <div className="mb-2 w-[448px] rounded bg-zinc-50">
       <div className="relative">
@@ -36,8 +40,7 @@ export function EventCard({
       </div>
 
       <div className="ml-4 mt-4 flex flex-row gap-2">
-        <Tag text="Doação" />
-        <Tag text="Roupas" />
+        <Tag text={tag} />
       </div>
 
       <div className="ml-4 mt-6">
@@ -56,7 +59,9 @@ export function EventCard({
         <div className="flex flex-row items-center">
           <Clock color="#22C55E" size={14} />
 
-          <p className="ml-2 text-sm font-medium text-zinc-500">{date}</p>
+          <p className="ml-2 text-sm font-medium text-zinc-500">
+            {dateFormated}
+          </p>
         </div>
       </div>
 

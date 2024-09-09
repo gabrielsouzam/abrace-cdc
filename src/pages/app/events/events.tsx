@@ -1,68 +1,117 @@
 import { CaretDown } from '@phosphor-icons/react'
 import * as Select from '@radix-ui/react-select'
 import { CheckIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 import Doacao from '../../../assets/Doacao.png'
+import { api } from '../../../lib/axios'
 import { EventCard } from './components/event-card'
 
-const event1 = {
-  id: 1,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '4 FEV 2024 16H',
+interface Event {
+  id: string
+  title: string
+  caption: string
+  description: string
+  dateTime: string
+  category: {
+    id: string
+    name: string
+    description: string
+  }
+  organizer: {
+    id: string
+    name: string
+    email: string
+    cellphone: string
+  }
+  address: {
+    cep: string
+    city: string
+    complement: string
+    id: string
+    number: number
+    road: string
+  }
+  registers: {
+    id: string
+    urlImage: string
+    description: string
+  }[]
+  donationsEvent: {
+    id: string
+    value: number
+  }[]
 }
 
-const event2 = {
-  id: 2,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '15 FEV 2024 16H',
+interface Category {
+  id: string
+  name: string
+  description: string
 }
 
-const event3 = {
-  id: 3,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '22 FEV 2024 16H',
-}
-
-const event4 = {
-  id: 4,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '3 MAR 2024 16H',
-}
-
-const event5 = {
-  id: 5,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '18 MAR 2024 16H',
+interface Address {
+  cep: string
+  city: string
+  complement: string
+  id: string
+  number: number
+  road: string
 }
 
 export function Events() {
-  const events = [event1, event2, event3, event4, event5]
+  const [events, setEvents] = useState<Event[]>([])
+  const [citys, setCitys] = useState<Address[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([])
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedCity, setSelectedCity] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function getAllEvents() {
+      const response = await api.get('/api/events')
+      console.log(response)
+      setEvents(response.data)
+    }
+
+    async function getAllCategories() {
+      const response = await api.get('/categories/list', {
+        params: {
+          filter: '',
+        },
+      })
+      console.log(response)
+      setCategories(response.data)
+    }
+
+    async function getAllCitys() {
+      const response = await api.get('/address')
+      console.log(response)
+      setCitys(response.data)
+    }
+
+    getAllCitys()
+    getAllCategories()
+    getAllEvents()
+  }, [])
+
+  useEffect(() => {
+    let filtered = events
+
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (event) => event.category.name === selectedCategory,
+      )
+    }
+
+    if (selectedCity) {
+      filtered = filtered.filter((event) => event.address.road === selectedCity)
+    }
+
+    setFilteredEvents(filtered)
+  }, [selectedCategory, selectedCity, events])
 
   return (
     <>
@@ -72,7 +121,7 @@ export function Events() {
           <h1 className="text-4xl font-semibold text-zinc-900">Eventos</h1>
 
           <div className="flex flex-row flex-wrap items-center justify-between gap-4">
-            <Select.Root>
+            <Select.Root onValueChange={setSelectedCategory}>
               <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Categoria" />
                 <Select.Icon>
@@ -90,31 +139,27 @@ export function Events() {
                       <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                         Categorias
                       </Select.Label>
-                      <Select.Item
-                        value="Roupa"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                      >
-                        <Select.ItemText>Roupa</Select.ItemText>
-                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                          <CheckIcon />
-                        </Select.ItemIndicator>
-                      </Select.Item>
-                      <Select.Item
-                        value="Comida"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                      >
-                        <Select.ItemText>Comida</Select.ItemText>
-                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                          <CheckIcon />
-                        </Select.ItemIndicator>
-                      </Select.Item>
+                      {categories?.map((category) => {
+                        return (
+                          <Select.Item
+                            value={category.name}
+                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                            key={category.id}
+                          >
+                            <Select.ItemText>{category.name}</Select.ItemText>
+                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                              <CheckIcon />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                        )
+                      })}
                     </Select.Group>
                   </Select.Viewport>
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
 
-            <Select.Root>
+            <Select.Root onValueChange={setSelectedCity}>
               <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Bairro" />
                 <Select.Icon>
@@ -130,26 +175,22 @@ export function Events() {
                   <Select.Viewport className="p-1">
                     <Select.Group>
                       <Select.Label className="px-6 py-2 text-sm text-zinc-900">
-                        Bairros
+                        Ruas
                       </Select.Label>
-                      <Select.Item
-                        value="Centro"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                      >
-                        <Select.ItemText>Centro</Select.ItemText>
-                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                          <CheckIcon />
-                        </Select.ItemIndicator>
-                      </Select.Item>
-                      <Select.Item
-                        value="Putiú"
-                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                      >
-                        <Select.ItemText>Putiú</Select.ItemText>
-                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                          <CheckIcon />
-                        </Select.ItemIndicator>
-                      </Select.Item>
+                      {citys?.map((city) => {
+                        return (
+                          <Select.Item
+                            value={city.road}
+                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                            key={city.id}
+                          >
+                            <Select.ItemText>{city.road}</Select.ItemText>
+                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                              <CheckIcon />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                        )
+                      })}
                     </Select.Group>
                   </Select.Viewport>
                 </Select.Content>
@@ -158,21 +199,30 @@ export function Events() {
           </div>
         </div>
 
-        <div className="mx-14 mt-10 grid grid-cols-3 gap-4">
-          {events.map((event) => {
-            return (
-              <EventCard
-                image={Doacao}
-                title={event.title}
-                subtitle={event.subtitle}
-                author={event.author}
-                locale={event.locale}
-                date={event.date}
-                key={event.id}
-              />
-            )
-          })}
-        </div>
+        {filteredEvents.length === 0 ? (
+          <div className="flex h-96 items-center justify-center">
+            <p className="text-center text-xl text-zinc-700">
+              Ainda não há eventos cadastrados com essa categoria ou bairro.
+            </p>
+          </div>
+        ) : (
+          <div className="mx-14 mt-10 grid grid-cols-3 gap-4">
+            {filteredEvents?.map((event) => {
+              return (
+                <EventCard
+                  image={Doacao}
+                  title={event.title}
+                  subtitle={event.caption}
+                  author={event.organizer.name}
+                  locale={`${event.address.city}, ${event.address.road}, ${event.address.number}`}
+                  date={event.dateTime}
+                  tag={event.category.name}
+                  key={event.id}
+                />
+              )
+            })}
+          </div>
+        )}
       </div>
     </>
   )
