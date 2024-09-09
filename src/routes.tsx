@@ -3,7 +3,6 @@ import { createBrowserRouter } from 'react-router-dom'
 import { AdminLayout } from './pages/_layouts/admin'
 import { AppLayout } from './pages/_layouts/app'
 import { AuthLayout } from './pages/_layouts/auth'
-import { CreateLayout } from './pages/_layouts/create'
 import { DonateLayout } from './pages/_layouts/donate'
 import { ChooseCreate } from './pages/admin/create/choose-create'
 import { CreateEvent } from './pages/admin/create/create-event/create-event'
@@ -56,17 +55,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/',
+    path: '/admin',
     element: <AdminLayout />,
     children: [
-      {
-        path: '/create',
-        element: <CreateLayout />,
-        children: [
-          { path: '/create', element: <ChooseCreate /> },
-          { path: '/create/create-event', element: <CreateEvent /> },
-        ],
-      },
+      { path: 'create', element: <ChooseCreate /> },
+      { path: 'create/create-event', element: <CreateEvent /> },
     ],
   },
 ])

@@ -62,7 +62,7 @@ export function AppHeaderAdmin() {
         </nav>
 
         <Link
-          to="choose-donation"
+          to="/admin/create"
           className="text-l flex items-center gap-2 rounded bg-green-700 px-3 py-2 font-medium"
         >
           CRIAR

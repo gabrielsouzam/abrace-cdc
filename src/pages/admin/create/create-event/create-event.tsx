@@ -7,12 +7,11 @@ import { z } from 'zod'
 
 // Validação do schema com zod
 const createEventSchema = z.object({
-  title: z.string().min(1, 'O título é obrigatório'),
+  title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
-  category: z.enum(['Webinar', 'Workshop', 'Palestra']),
   description: z.string().optional(),
-  date: z.string().min(1, 'A data é obrigatória'),
-  time: z.string().min(1, 'O horário é obrigatório'),
+  date: z.string().min(1, 'A data é obrigatória.'),
+  time: z.string().min(1, 'O horário é obrigatório.'),
   image: z.string().optional(),
 })
 
@@ -20,7 +19,7 @@ type CreateEventForm = z.infer<typeof createEventSchema>
 
 export function CreateEvent() {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false) // Estado para controlar o loading
+  const [loading, setLoading] = useState(false)
 
   const {
     handleSubmit,
@@ -30,41 +29,41 @@ export function CreateEvent() {
     resolver: zodResolver(createEventSchema),
   })
 
-  // Função para enviar dados para a API
   async function handleCreateEvent(data: CreateEventForm) {
-    setLoading(true) // Inicia o estado de loading quando a função é chamada
+    setLoading(true)
     try {
-      // Envia os dados para a API externa
       const response = await axios.post(
         'https://api.meuservico.com/events',
         data,
       )
       console.log(response.data)
-
-      // Redireciona após o sucesso
       navigate('/events/success')
     } catch (error) {
       console.error('Erro ao criar o evento:', error)
     } finally {
-      setLoading(false) // Finaliza o estado de loading após a requisição
+      setLoading(false)
     }
   }
 
   return (
-    <div>
+    <div className="mx-auto flex w-2/6 min-w-96 max-w-full flex-col justify-center">
       <h1 className="pb-4 text-2xl font-semibold">Novo evento</h1>
       <form
         className="mb-4 flex flex-col"
         onSubmit={handleSubmit(handleCreateEvent)}
       >
         {/* Campo de título */}
-        <label className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-50 pl-1 text-zinc-900">
-            Título do Evento
-          </span>
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 pl-1">Título do Evento</span>
         </label>
 
-        <div className="mb-2 flex h-12 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.title ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
           <input
             type="text"
             placeholder="Título do evento"
@@ -83,7 +82,7 @@ export function CreateEvent() {
           <span className="bg-zinc-50 pr-1 text-zinc-400">(opcional)</span>
         </label>
 
-        <div className="mb-2 flex h-12 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
+        <div className="mb-2 flex h-12 items-start rounded border-1 border-zinc-400 p-2 outline-none">
           <input
             type="text"
             placeholder="Subtítulo"
@@ -93,11 +92,17 @@ export function CreateEvent() {
         </div>
 
         {/* Campo de data */}
-        <label className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-50 pl-1 text-zinc-900">Data</span>
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 pl-1">Data</span>
         </label>
 
-        <div className="mb-2 flex h-12 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.date ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
           <input
             type="date"
             className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
@@ -110,11 +115,17 @@ export function CreateEvent() {
         )}
 
         {/* Campo de horário */}
-        <label className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-50 pl-1 text-zinc-900">Horário</span>
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 pl-1">Horário</span>
         </label>
 
-        <div className="mb-2 flex h-12 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.time ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
           <input
             type="time"
             className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
@@ -132,7 +143,7 @@ export function CreateEvent() {
           <span className="bg-zinc-50 pr-1 text-zinc-400">(opcional)</span>
         </span>
 
-        <div className="mb-4 flex h-36 items-start rounded border-1 border-solid border-zinc-400 p-2 outline-none">
+        <div className="mb-4 flex h-36 items-start rounded border-1 border-zinc-400 p-2 outline-none">
           <textarea
             className="h-full w-full resize-none overflow-hidden bg-transparent text-sm text-zinc-900 outline-none"
             {...register('description')}
