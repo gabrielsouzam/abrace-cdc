@@ -4,6 +4,8 @@ import { AdminLayout } from './pages/_layouts/admin'
 import { AppLayout } from './pages/_layouts/app'
 import { AuthLayout } from './pages/_layouts/auth'
 import { DonateLayout } from './pages/_layouts/donate'
+import { ChooseCreate } from './pages/admin/create/choose-create'
+import { CreateEvent } from './pages/admin/create/create-event/create-event'
 import { Actions } from './pages/app/actions/actions'
 import { ChooseDonation } from './pages/app/donate/choose-donetion'
 import { Donation } from './pages/app/donate/donation/donation'
@@ -44,7 +46,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: '/',
     element: <AuthLayout />,
@@ -56,6 +57,9 @@ export const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminLayout />,
-    children: [],
+    children: [
+      { path: 'create', element: <ChooseCreate /> },
+      { path: 'create/create-event', element: <CreateEvent /> },
+    ],
   },
 ])
