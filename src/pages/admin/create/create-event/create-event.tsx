@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as Select from '@radix-ui/react-select'
 import axios from 'axios'
+import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
@@ -9,13 +11,14 @@ import { z } from 'zod'
 const createEventSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
+  category: z.string().nonempty('A categoria é obrigatória.'), // Use nonempty ao invés de min
   description: z.string().optional(),
   date: z.string().min(1, 'A data é obrigatória.'),
   time: z.string().min(1, 'O horário é obrigatório.'),
   image: z.string().optional(),
 })
 
-type CreateEventForm = z.infer<typeof createEventSchema>
+type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 
 export function CreateEvent() {
   const navigate = useNavigate()
@@ -24,6 +27,7 @@ export function CreateEvent() {
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm<CreateEventForm>({
     resolver: zodResolver(createEventSchema),
@@ -90,6 +94,91 @@ export function CreateEvent() {
             {...register('subtitle')}
           />
         </div>
+
+        {/* Campo de categoria */}
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 px-1">Categoria</span>
+        </label>
+
+        <Controller
+          control={control}
+          defaultValue=""
+          name="category"
+          render={({ field }) => {
+            return (
+              <>
+                <Select.Root
+                  onValueChange={field.onChange}
+                  value={field.value || ''}
+                >
+                  <Select.Trigger
+                    data-error={!!errors.category}
+                    className="mb-2 inline-flex items-center justify-between gap-1 rounded border-1 border-solid 
+                border-zinc-400 bg-transparent px-4 py-3 text-sm text-zinc-900 outline-none 
+                data-[error=true]:border-red-500 data-[error=true]:text-red-500 data-[placeholder]:text-gray-400"
+                    aria-label="Food"
+                  >
+                    <Select.Value placeholder="Seleciona uma categoria" />
+                    <Select.Icon
+                      data-error={!!errors.category}
+                      className="text-zinc-900 data-[error=true]:text-red-500"
+                    >
+                      <ChevronDownIcon className="text-zinc-400" />
+                    </Select.Icon>
+                  </Select.Trigger>
+                  <Select.Portal>
+                    <Select.Content className=" overflow-hidden rounded-sm bg-zinc-100">
+                      <Select.Viewport className="p-1">
+                        <Select.Group>
+                          <Select.Item
+                            value="Roupa"
+                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                          >
+                            <Select.ItemText>Roupa</Select.ItemText>
+                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                              <CheckIcon />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                          <Select.Item
+                            value="Alimento"
+                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                          >
+                            <Select.ItemText>Alimento</Select.ItemText>
+                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                              <CheckIcon />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                          <Select.Item
+                            value="Moradia"
+                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                          >
+                            <Select.ItemText>Moradia</Select.ItemText>
+                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                              <CheckIcon />
+                            </Select.ItemIndicator>
+                          </Select.Item>
+                        </Select.Group>
+
+                        <Select.Separator className="bg-violet6 m-[5px] h-[1px]" />
+                      </Select.Viewport>
+                      <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-500">
+                        <ChevronDownIcon />
+                      </Select.ScrollDownButton>
+                    </Select.Content>
+                  </Select.Portal>
+                </Select.Root>
+              </>
+            )
+          }}
+        />
+
+        {errors.category && (
+          <span className="text-xs text-red-500">
+            {errors.category.message}
+          </span>
+        )}
 
         {/* Campo de data */}
         <label
