@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
+import { Action } from '../../../@types/Action'
 import { api } from '../../../lib/axios'
 import { ActionCard } from './components/action-card'
-import { Action } from './types/Action'
 
 export function Actions() {
   const [actions, setActions] = useState<Action[]>()
