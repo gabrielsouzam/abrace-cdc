@@ -2,10 +2,10 @@ import { Heart, MapPin, ThumbsUp, User } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { Action } from '../../../@types/Action'
 import { api } from '../../../lib/axios'
 import ActionInfoImage from './../../../assets/action-info-image.svg'
 import { LineLevelBig } from './components/line-level-big'
-import { Action } from './types/Action'
 
 export function ActionInfo() {
   const { id } = useParams()

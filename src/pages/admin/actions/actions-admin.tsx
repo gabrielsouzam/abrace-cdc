@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async'
 
 import { Action } from '../../../@types/Action'
 import { api } from '../../../lib/axios'
-import { ActionCard } from './components/action-card'
+import { ActionCardAdmin } from './components/action-card-admin'
 
-export function Actions() {
+export function ActionsAdmin() {
   const [actions, setActions] = useState<Action[]>()
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function Actions() {
         <div className="grid w-full grid-cols-3 gap-10">
           {actions?.map((action) => {
             return (
-              <ActionCard
+              <ActionCardAdmin
                 key={action.id}
                 title={action.title}
                 subtile={action.subtitle}
