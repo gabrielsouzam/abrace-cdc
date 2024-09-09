@@ -56,7 +56,7 @@ export function CreateEvent() {
         <label
           className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
         >
-          <span className="bg-zinc-50 pl-1">Título do Evento</span>
+          <span className="bg-zinc-50 px-1">Título do Evento</span>
         </label>
 
         <div
@@ -95,7 +95,7 @@ export function CreateEvent() {
         <label
           className={`relative left-2 top-2 mt-4 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
         >
-          <span className="bg-zinc-50 pl-1">Data</span>
+          <span className="bg-zinc-50 px-1">Data</span>
         </label>
 
         <div
@@ -118,7 +118,7 @@ export function CreateEvent() {
         <label
           className={`relative left-2 top-2 mt-4 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
         >
-          <span className="bg-zinc-50 pl-1">Horário</span>
+          <span className="bg-zinc-50 px-1">Horário</span>
         </label>
 
         <div
