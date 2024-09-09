@@ -18,6 +18,7 @@ import { Supporters } from './pages/app/supporters/supporters'
 import { WhoWeAre } from './pages/app/who-we-are/who-we-are'
 import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
+import { ChoiceCreate } from './pages/admin/choice-create/choice-create'
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,8 @@ export const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminLayout />,
-    children: [],
+    children: [
+      {path: '/admin/choice-create', element: <ChoiceCreate />}
+    ],
   },
 ])
