@@ -1,34 +1,16 @@
-import { Heart } from '@phosphor-icons/react'
-import { Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import Logo from './../../../assets/logo.svg'
 
-export function AppHeader() {
+export function AppHeaderAdmin() {
   return (
-    <header className="mb-28 flex items-center gap-16 px-24 py-8">
+    <header className="mb-28 flex items-center justify-between gap-16 px-36 py-8">
       <Link to="/">
         <img className="24" src={Logo} alt="Logo Casa da Caridade" />
       </Link>
 
-      <form className="flex-1 text-zinc-400">
-        <div
-          className="flex items-center gap-4 rounded border-2 
-          border-solid border-zinc-500 bg-zinc-50 p-2 px-4 focus:border-red-500"
-        >
-          <button>
-            <Search size={20} />
-          </button>
-          <input
-            type="text"
-            className="text-l w-full bg-transparent focus:outline-none"
-            placeholder="Pesquisar por nome da ação, categoria da ação..."
-          />
-        </div>
-      </form>
-
       <div className="flex flex-row items-center gap-6">
-        <nav className="text-normal space-x-6">
+        <nav className="text-normal space-x-14">
           <Link
             title="quemSomos"
             className="text-zinc-700 hover:text-zinc-950 active:font-bold"
@@ -58,18 +40,17 @@ export function AppHeader() {
             className="text-zinc-700 hover:text-zinc-900 active:font-bold"
             to="profile"
           >
-            PERFIL
+            DOADORES
           </Link>
         </nav>
-
-        <Link
-          to="choose-donation"
-          className="text-l flex items-center gap-2 rounded bg-green-700 px-3 py-2 font-medium text-zinc-50"
-        >
-          <Heart weight="fill" />
-          DOE
-        </Link>
       </div>
+
+      <Link
+        to="choose-donation"
+        className="text-l flex items-center gap-2 rounded bg-green-700 px-3 py-2 font-medium text-zinc-50"
+      >
+        CRIAR
+      </Link>
     </header>
   )
 }

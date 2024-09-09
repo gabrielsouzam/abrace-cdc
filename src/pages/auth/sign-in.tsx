@@ -1,8 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import Cookies from 'js-cookie'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+
+import { api } from '../../lib/axios'
 
 const signInForm = z.object({
   email: z.string().email('Formato de e-mail inválido'),
@@ -19,8 +22,19 @@ export function SignIn() {
     formState: { errors },
   } = useForm<SignInForm>({ resolver: zodResolver(signInForm) })
 
-  function handleSignIn(data: SignInForm) {
-    console.log(data)
+  async function handleSignIn(data: SignInForm) {
+    const response = await api.post('/auth/login', {
+      email: data.email,
+      password: data.password,
+    })
+
+    const token = response.data.token
+    const expirationDate = new Date(new Date().getTime() + 60 * 60 * 24000 * 7) // 7 dias
+
+    Cookies.set('authToken', token, { expires: expirationDate })
+
+    const tokenRetriced = Cookies.get('authToken')
+    console.log(tokenRetriced)
 
     navigate('/')
   }

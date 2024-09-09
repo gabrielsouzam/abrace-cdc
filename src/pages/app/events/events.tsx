@@ -4,60 +4,12 @@ import { CheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 
+import { Address } from '../../../@types/Address'
+import { Category } from '../../../@types/Category'
+import { Event } from '../../../@types/Event'
 import Doacao from '../../../assets/Doacao.png'
 import { api } from '../../../lib/axios'
-import { EventCard } from './components/event-card'
-
-interface Event {
-  id: string
-  title: string
-  caption: string
-  description: string
-  dateTime: string
-  category: {
-    id: string
-    name: string
-    description: string
-  }
-  organizer: {
-    id: string
-    name: string
-    email: string
-    cellphone: string
-  }
-  address: {
-    cep: string
-    city: string
-    complement: string
-    id: string
-    number: number
-    road: string
-  }
-  registers: {
-    id: string
-    urlImage: string
-    description: string
-  }[]
-  donationsEvent: {
-    id: string
-    value: number
-  }[]
-}
-
-interface Category {
-  id: string
-  name: string
-  description: string
-}
-
-interface Address {
-  cep: string
-  city: string
-  complement: string
-  id: string
-  number: number
-  road: string
-}
+import { EventCard } from '../../_layouts/components/event-card'
 
 export function Events() {
   const [events, setEvents] = useState<Event[]>([])
@@ -116,13 +68,13 @@ export function Events() {
   return (
     <>
       <Helmet title="Events" />
-      <div>
-        <div className="flex flex-row justify-between px-20">
-          <h1 className="text-4xl font-semibold text-zinc-900">Eventos</h1>
+      <div className="mb-20 px-14 text-zinc-900">
+        <div className="mb-11 flex justify-between">
+          <h1 className="text-4xl font-semibold">Eventos</h1>
 
           <div className="flex flex-row flex-wrap items-center justify-between gap-4">
             <Select.Root onValueChange={setSelectedCategory}>
-              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-1 border-zinc-400 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Categoria" />
                 <Select.Icon>
                   <CaretDown
@@ -160,7 +112,7 @@ export function Events() {
             </Select.Root>
 
             <Select.Root onValueChange={setSelectedCity}>
-              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-2 border-zinc-500 bg-zinc-50 px-3 text-base text-gray-700">
+              <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-1 border-zinc-400 bg-zinc-50 px-3 text-base text-gray-700">
                 <Select.Value placeholder="Bairro" />
                 <Select.Icon>
                   <CaretDown
@@ -206,7 +158,7 @@ export function Events() {
             </p>
           </div>
         ) : (
-          <div className="mx-14 mt-10 grid grid-cols-3 gap-4">
+          <div className="grid w-full grid-cols-3 gap-10">
             {filteredEvents?.map((event) => {
               return (
                 <EventCard
@@ -218,6 +170,7 @@ export function Events() {
                   date={event.dateTime}
                   tag={event.category.name}
                   key={event.id}
+                  id={event.id}
                 />
               )
             })}

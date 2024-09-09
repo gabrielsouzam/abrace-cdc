@@ -1,69 +1,17 @@
 import 'react-multi-carousel/lib/styles.css'
 
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Carousel from 'react-multi-carousel'
 
+import { Event } from '../../../@types/Event'
 import Doacao from '../../../assets/Doacao.png'
 import Humans from '../../../assets/Humans.svg'
-import { EventCard } from './components/event-card'
-
-const event1 = {
-  id: 1,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '4 FEV 2024 16H',
-}
-
-const event2 = {
-  id: 2,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '15 FEV 2024 16H',
-}
-
-const event3 = {
-  id: 3,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '22 FEV 2024 16H',
-}
-
-const event4 = {
-  id: 4,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '3 MAR 2024 16H',
-}
-
-const event5 = {
-  id: 5,
-  image: '../../../../assets/Doacao.png',
-  title: 'Doação de roupas para famílias desabrigadas',
-  subtitle:
-    'Doação de roupas para as famílias desabrigadas das chuvas do bairro Putiú',
-  author: 'Casa da caridade',
-  locale: 'Praça José de Barros, Quixadá - CE',
-  date: '18 MAR 2024 16H',
-}
+import { api } from '../../../lib/axios'
+import { EventCard } from '../../_layouts/components/event-card'
 
 export function Home() {
-  const events = [event1, event2, event3, event4, event5]
+  const [events, setEvents] = useState<Event[]>([])
 
   const responsive = {
     superLargeDesktop: {
@@ -75,6 +23,16 @@ export function Home() {
       items: 3,
     },
   }
+
+  useEffect(() => {
+    async function getAllEvents() {
+      const response = await api.get('/api/events/latest')
+      console.log(response)
+      setEvents(response.data)
+    }
+
+    getAllEvents()
+  }, [])
 
   return (
     <>
@@ -119,17 +77,19 @@ export function Home() {
         </p>
       </div>
 
-      <Carousel responsive={responsive}>
+      <Carousel responsive={responsive} itemClass="px-4" containerClass="py-10">
         {events.map((event) => {
           return (
             <EventCard
               image={Doacao}
               title={event.title}
-              subtitle={event.subtitle}
-              author={event.author}
-              locale={event.locale}
-              date={event.date}
+              subtitle={event.caption}
+              author={event.organizer.name}
+              locale={`${event.address.city}, ${event.address.road}, ${event.address.number}`}
+              date={event.dateTime}
+              tag={event.category.name}
               key={event.id}
+              id={event.id}
             />
           )
         })}
