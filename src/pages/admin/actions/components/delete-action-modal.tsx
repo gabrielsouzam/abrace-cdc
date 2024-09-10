@@ -1,7 +1,19 @@
 import { X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
 
-export function DeleteActionModal() {
+interface DeleteActionModalProps {
+  actionId: string
+  onDelete: (actionId: string) => void
+}
+
+export function DeleteActionModal({
+  actionId,
+  onDelete,
+}: DeleteActionModalProps) {
+  async function handleDeleteAction() {
+    await onDelete(actionId)
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 h-screen w-screen bg-black/75" />
@@ -24,7 +36,10 @@ export function DeleteActionModal() {
               <span>Cancelar</span>
             </button>
           </Dialog.Close>
-          <button className=" flex items-center justify-center gap-1 rounded bg-red-600 p-2 text-sm text-zinc-50">
+          <button
+            className=" flex items-center justify-center gap-1 rounded bg-red-600 p-2 text-sm text-zinc-50"
+            onClick={handleDeleteAction}
+          >
             <span>Excluir</span>
           </button>
         </div>
