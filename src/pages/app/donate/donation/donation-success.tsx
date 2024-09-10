@@ -25,7 +25,7 @@ export function DonationSuccess() {
 
       <Link
         to="/"
-        className="block w-full rounded bg-green-700 py-2 text-center"
+        className="block w-full rounded bg-green-700 py-2 text-center text-zinc-50"
       >
         VOLTAR PARA TELA INICIAL
       </Link>
