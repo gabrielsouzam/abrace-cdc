@@ -1,17 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as Dialog from '@radix-ui/react-dialog'
 import * as Select from '@radix-ui/react-select'
 import axios from 'axios'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
+
+import { Category } from '../../../@types/Category'
+import { api } from '../../../lib/axios'
+import { NewCategoryModal } from '../@components/new-category-modal'
 
 // Validação do schema com zod
 const createEventSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
   category: z.string().nonempty('A categoria é obrigatória.'), // Use nonempty ao invés de min
+  address: z.string().min(1, 'O endereço é obrigatório.'),
   description: z.string().optional(),
   date: z.string().min(1, 'A data é obrigatória.'),
   time: z.string().min(1, 'O horário é obrigatório.'),
@@ -21,8 +27,24 @@ const createEventSchema = z.object({
 type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 
 export function NewEvent() {
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
+
+  const handleCloseCategoryModal = useCallback(() => {
+    setIsOpenCategoryModal(false)
+  }, [])
+
+  useEffect(() => {
+    async function getAllCategories() {
+      const response = await api.get('/categories/')
+      setCategories(response.data)
+    }
+
+    if (isOpenCategoryModal === false) {
+      getAllCategories()
+    }
+  }, [isOpenCategoryModal])
 
   const {
     handleSubmit,
@@ -34,11 +56,20 @@ export function NewEvent() {
   })
 
   async function handleCreateEvent(data: CreateEventForm) {
+    console.log('entrou')
+    console.log(data)
     setLoading(true)
     try {
-      const response = await axios.post('/admin/events', { body: { data } })
+      const response = await axios.post('/api/events', {
+        category_id: data.category,
+        title: data.title,
+        caption: data.subtitle,
+        description: data.description,
+        address_id: data.address,
+        date: data.date,
+      })
       console.log(response.data)
-      navigate('/events/success')
+      toast.success('Ação criada com sucesso')
     } catch (error) {
       console.error('Erro ao criar o evento:', error)
     } finally {
@@ -129,35 +160,22 @@ export function NewEvent() {
                     <Select.Content className=" overflow-hidden rounded-sm bg-zinc-100">
                       <Select.Viewport className="p-1">
                         <Select.Group>
-                          <Select.Item
-                            value="Roupa"
-                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                          >
-                            <Select.ItemText>Roupa</Select.ItemText>
-                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                              <CheckIcon />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                          <Select.Item
-                            value="Alimento"
-                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                          >
-                            <Select.ItemText>Alimento</Select.ItemText>
-                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                              <CheckIcon />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                          <Select.Item
-                            value="Moradia"
-                            className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-200 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
-                          >
-                            <Select.ItemText>Moradia</Select.ItemText>
-                            <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
-                              <CheckIcon />
-                            </Select.ItemIndicator>
-                          </Select.Item>
+                          <Select.Label className="px-6 py-2 text-sm text-zinc-900">
+                            Categorias
+                          </Select.Label>
+                          {categories?.map((category) => (
+                            <Select.Item
+                              key={category.id}
+                              value={category.id}
+                              className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                            >
+                              <Select.ItemText>{category.name}</Select.ItemText>
+                              <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                                <CheckIcon />
+                              </Select.ItemIndicator>
+                            </Select.Item>
+                          ))}
                         </Select.Group>
-
                         <Select.Separator className="bg-violet6 m-[5px] h-[1px]" />
                       </Select.Viewport>
                       <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-500">
@@ -177,9 +195,44 @@ export function NewEvent() {
           </span>
         )}
 
+        <Dialog.Root
+          open={isOpenCategoryModal}
+          onOpenChange={setIsOpenCategoryModal}
+        >
+          <Dialog.Trigger asChild>
+            <button className=" flex w-full items-center justify-center gap-1 rounded border-1 border-zinc-400 bg-zinc-200 p-2 text-sm text-zinc-950 hover:bg-zinc-300">
+              <span>Adicionar categoria</span>
+            </button>
+          </Dialog.Trigger>
+
+          <NewCategoryModal
+            handleCloseCategoryModal={handleCloseCategoryModal}
+          />
+        </Dialog.Root>
+
+        {/* Campo de endereço */}
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.address ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 px-1">Endereço</span>
+        </label>
+
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.address ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
+          <input
+            type="text"
+            placeholder="Endereço"
+            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
+            {...register('address')}
+          />
+        </div>
+
+        {/* Campo de data e hora */}
         <div className="mt-4 flex w-full flex-row gap-4">
           <div className="w-1/2">
-            {/* Campo de data */}
             <label
               className={`relative left-2 top-2 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
             >
@@ -204,7 +257,6 @@ export function NewEvent() {
           </div>
 
           <div className="w-1/2">
-            {/* Campo de horário */}
             <label
               className={`relative left-2 top-2 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
             >
