@@ -1,7 +1,9 @@
-import { CaretRight, Heart, ThumbsUp } from '@phosphor-icons/react'
+import { CaretRight } from '@phosphor-icons/react'
+import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 
 import cardImage from './../../../../assets/donation-card-image.svg'
+import { DeleteActionModal } from './delete-action-modal'
 import { LineLevel } from './line-level'
 
 interface ActionCardProps {
@@ -12,7 +14,7 @@ interface ActionCardProps {
   actionImage: string | null
 }
 
-export function ActionCard({
+export function ActionCardAdmin({
   title,
   subtile,
   category,
@@ -44,15 +46,11 @@ export function ActionCard({
               {category}
             </span>
           </div>
-
-          <button className="flex items-center justify-center rounded-full bg-zinc-300 p-2 text-zinc-50">
-            <ThumbsUp size={24} weight="fill" />
-          </button>
         </div>
 
         <div className="mb-4 flex items-center justify-between">
-          <LineLevel level={57} />
-          <span className="text-sm text-zinc-800">57%</span>
+          <LineLevel level={50} />
+          <span className="text-sm text-zinc-800">50%</span>
         </div>
 
         <div className="flex justify-end gap-2">
@@ -62,10 +60,15 @@ export function ActionCard({
           >
             <span>VER MAIS</span> <CaretRight size={12} />
           </button>
-          <button className=" flex items-center justify-center gap-1 rounded bg-green-700 p-2 text-sm text-zinc-50">
-            <Heart weight="fill" size={16} />
-            <span>DOE</span>
-          </button>
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <button className=" flex items-center justify-center gap-1 rounded bg-red-600 p-2 text-sm text-zinc-50">
+                <span>EXCLUIR</span>
+              </button>
+            </Dialog.Trigger>
+
+            <DeleteActionModal />
+          </Dialog.Root>
         </div>
       </div>
     </div>
