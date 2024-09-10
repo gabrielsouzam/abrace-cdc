@@ -7,8 +7,8 @@ import { DonateLayout } from './pages/_layouts/donate'
 import { ActionsAdmin } from './pages/admin/actions/actions-admin'
 import { ChooseCreate } from './pages/admin/choose-create/choose-create'
 import { Donors } from './pages/admin/donors/donors'
-import { NewEvent } from './pages/admin/events/new-event'
 import { NewAction } from './pages/admin/new-action/new-action'
+import { NewEvent } from './pages/admin/new-events/new-event'
 import { ActionInfo } from './pages/app/actions/action-info'
 import { Actions } from './pages/app/actions/actions'
 import { ChooseDonation } from './pages/app/donate/choose-donetion'
@@ -17,6 +17,7 @@ import { DonationSignUp } from './pages/app/donate/donation/donation-sign-up'
 import { DonationSuccess } from './pages/app/donate/donation/donation-success'
 import { MonetaryDonation } from './pages/app/donate/donation/monetary-donation'
 import { OtherDonation } from './pages/app/donate/donation/other-donation'
+import { EventInfo } from './pages/app/events/event-info'
 import { Events } from './pages/app/events/events'
 import { Home } from './pages/app/home/home'
 import { Profile } from './pages/app/profile/profile'
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { path: '/actions', element: <Actions /> },
       { path: '/action/:id', element: <ActionInfo /> },
       { path: '/events', element: <Events /> },
+      { path: '/event/:id', element: <EventInfo /> },
       { path: '/supporters', element: <Supporters /> },
       { path: '/profile', element: <Profile /> },
       { path: '/choose-donation', element: <ChooseDonation /> },
@@ -66,8 +68,8 @@ export const router = createBrowserRouter([
       { path: 'donors', element: <Donors /> },
       { path: 'new-action', element: <NewAction /> },
       { path: 'actions', element: <ActionsAdmin /> },
-      { path: 'create', element: <ChooseCreate /> },
-      { path: 'create/create-event', element: <NewEvent /> },
+      { path: 'choose-create', element: <ChooseCreate /> },
+      { path: 'new-event', element: <NewEvent /> },
     ],
   },
 ])

@@ -1,43 +1,84 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import * as Dialog from '@radix-ui/react-dialog'
+import * as Select from '@radix-ui/react-select'
+import { CheckIcon, ChevronDownIcon } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Category } from '../../../@types/Category'
+import { Organizer } from '../../../@types/Organizer'
+import { api } from '../../../lib/axios'
+import { NewOrganizerModal } from '../@components/new-organizer-modal'
 
 // Validação do schema com zod
 const createActionSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
-  value: z.string().min(1, 'É necessário informar o valor'),
+  value: z
+    .string()
+    .min(1, 'É necessário informar o valor')
+    .refine((val) => !isNaN(Number(val)), {
+      message: 'O valor deve ser numérico.',
+    })
+    .transform((val) => Number(val)),
   description: z.string().optional(),
   image: z.any().optional(),
+  category: z.string().nonempty(),
+  organizer: z.string().min(1, 'O campo organizer é obrigatório.'),
 })
 
 type CreateActionForm = z.infer<typeof createActionSchema>
 
 export function NewAction() {
-  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [organizers, setOrganizers] = useState<Organizer[]>()
+  const [categories, setCategories] = useState<Category[]>()
+
+  const [isOpen, setIsOpen] = useState(false)
 
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm<CreateActionForm>({
     resolver: zodResolver(createActionSchema),
   })
 
+  const handleCloseModal = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
+  useEffect(() => {
+    async function getAllOrganizer() {
+      const response = await api.get('/organizer/')
+      setOrganizers(response.data)
+    }
+
+    async function getAllCategories() {
+      const response = await api.get('/categories/')
+      setCategories(response.data)
+    }
+
+    if (isOpen === false) {
+      getAllOrganizer()
+      getAllCategories()
+    }
+  }, [isOpen])
+
   async function handleCreateAction(data: CreateActionForm) {
     setLoading(true)
     try {
-      const response = await axios.post(
-        'https://api.meuservico.com/actions',
-        data,
-      )
+      const response = await api.post('/action/create', {
+        categoryId: data.category,
+        organizerId: data.organizer,
+        title: data.title,
+        subtitle: data.subtitle,
+        description: data.description,
+        value: data.value,
+      })
       console.log(response.data)
-      navigate('/actions/success')
     } catch (error) {
       console.error('Erro ao criar a ação:', error)
     } finally {
@@ -60,7 +101,7 @@ export function NewAction() {
         </label>
 
         <div
-          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${errors.title ? 'border-red-500' : 'border-zinc-400'}`}
+          className={` mb-2 flex  h-12 items-start rounded border-1 p-2 outline-none ${errors.title ? 'border-red-500' : 'border-zinc-400'}`}
         >
           <input
             type="text"
@@ -89,19 +130,174 @@ export function NewAction() {
           />
         </div>
 
-
         {/* Campo de valor */}
-        <span className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-50 px-1 text-zinc-900">Valor</span>
+        <span className="relative left-2 top-2 mt-4 inline text-xs ">
+          <span
+            data-error={!!errors.value}
+            className="bg-zinc-50 px-1 text-zinc-900 data-[error=true]:text-red-500"
+          >
+            Valor
+          </span>
         </span>
 
-        <div className="mb-4 flex h-12 items-start rounded border-1 border-zinc-400 p-2 outline-none">
-        <input
+        <div
+          data-error={!!errors.value}
+          className="mb-2 flex h-12 items-start rounded border-1 border-zinc-400 p-2 outline-none data-[error=true]:border-red-500"
+        >
+          <input
             type="text"
             placeholder="Valor a ser arrecadado"
-            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
+            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none "
             {...register('value')}
           />
+        </div>
+
+        {errors.value && (
+          <span className="text-xs text-red-500">{errors.value.message}</span>
+        )}
+
+        <div className="mt-2 flex gap-2">
+          <div className="flex-1 space-y-2">
+            <Controller
+              control={control}
+              name="category"
+              render={({ field }) => {
+                return (
+                  <Select.Root
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <Select.Trigger
+                      data-error={!!errors.category}
+                      className="inline-flex w-full items-center justify-between gap-1 rounded border-1 border-solid 
+                border-zinc-400 bg-transparent px-4 py-3 text-sm text-zinc-900 outline-none focus:shadow-[0_0_0_1px]
+                focus:shadow-white data-[error=true]:border-red-500 data-[placeholder]:text-gray-400 "
+                      aria-label="Food"
+                    >
+                      <Select.Value placeholder="Seleciona uma categoria" />
+                      <Select.Icon className="text-zinc-900 ">
+                        <ChevronDownIcon
+                          data-error={!!errors.category}
+                          className="text-zinc-400 data-[error=true]:text-red-500"
+                        />
+                      </Select.Icon>
+                    </Select.Trigger>
+                    <Select.Portal>
+                      <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                        <Select.Viewport className="p-1">
+                          <Select.Group>
+                            <Select.Label className="px-6 py-2 text-sm text-zinc-900">
+                              Categorias
+                            </Select.Label>
+                            {categories?.map((category) => (
+                              <Select.Item
+                                key={category.id}
+                                value={category.id}
+                                className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                              >
+                                <Select.ItemText>
+                                  {category.name}
+                                </Select.ItemText>
+                                <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                                  <CheckIcon />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                            ))}
+                          </Select.Group>
+
+                          <Select.Separator className="bg-violet6 m-[5px] h-[1px]" />
+                        </Select.Viewport>
+                        <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-500">
+                          <ChevronDownIcon />
+                        </Select.ScrollDownButton>
+                      </Select.Content>
+                    </Select.Portal>
+                  </Select.Root>
+                )
+              }}
+            />
+            {errors.category && (
+              <span className="ml-1 text-xs text-red-500">
+                O campo categoria é obrigatório
+              </span>
+            )}
+          </div>
+          <div className="flex-1 space-y-2">
+            <Controller
+              control={control}
+              name="organizer"
+              render={({ field }) => {
+                return (
+                  <Select.Root
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    <Select.Trigger
+                      data-error={!!errors.organizer}
+                      className="inline-flex w-full items-center justify-between gap-1 rounded border-1 border-solid 
+                border-zinc-400 bg-transparent px-4 py-3 text-sm text-zinc-900 outline-none focus:shadow-[0_0_0_1px]
+                focus:shadow-white data-[error=true]:border-red-500 data-[placeholder]:text-gray-400"
+                      aria-label="Food"
+                    >
+                      <Select.Value placeholder="Seleciona um organizador" />
+                      <Select.Icon className="text-zinc-900 ">
+                        <ChevronDownIcon
+                          data-error={!!errors.organizer}
+                          className="text-zinc-400 data-[error=true]:text-red-500"
+                        />
+                      </Select.Icon>
+                    </Select.Trigger>
+                    <Select.Portal>
+                      <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                        <Select.Viewport className="p-1">
+                          <Select.Group>
+                            <Select.Label className="px-6 py-2 text-sm text-zinc-900">
+                              Organizadores
+                            </Select.Label>
+                            {organizers?.map((organizer) => (
+                              <Select.Item
+                                key={organizer.id}
+                                value={organizer.id}
+                                className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                              >
+                                <Select.ItemText>
+                                  {organizer.name}
+                                </Select.ItemText>
+                                <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                                  <CheckIcon />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                            ))}
+                          </Select.Group>
+
+                          <Select.Separator className="bg-violet6 m-[5px] h-[1px]" />
+                        </Select.Viewport>
+                        <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-500">
+                          <ChevronDownIcon />
+                        </Select.ScrollDownButton>
+                      </Select.Content>
+                    </Select.Portal>
+                  </Select.Root>
+                )
+              }}
+            />
+
+            {errors.organizer && (
+              <span className="ml-1 text-xs text-red-500">
+                O campo organizador é obrigatório
+              </span>
+            )}
+
+            <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+              <Dialog.Trigger asChild>
+                <button className=" flex w-full items-center justify-center gap-1 rounded border-1 border-zinc-400 bg-zinc-200 p-2 text-sm text-zinc-950 hover:bg-zinc-300">
+                  <span>Adicionar organizador</span>
+                </button>
+              </Dialog.Trigger>
+
+              <NewOrganizerModal handleCloseModal={handleCloseModal} />
+            </Dialog.Root>
+          </div>
         </div>
 
         {/* Campo de descrição */}
@@ -148,7 +344,7 @@ export function NewAction() {
         {/* Botão de criar actiono */}
         <button
           type="submit"
-          className="mb-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600"
+          className="mb-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={loading}
         >
           {loading ? 'Enviando...' : 'CRIAR AÇÃO'}
