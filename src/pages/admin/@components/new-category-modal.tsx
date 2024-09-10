@@ -7,42 +7,40 @@ import { z } from 'zod'
 
 import { api } from '../../../lib/axios'
 
-interface NewOrganizerModalProps {
-  handleCloseOrganizerModal: () => void
+interface NewCategoryModalProps {
+  handleCloseCategoryModal: () => void
 }
 
-const createOrganizerSchema = z.object({
+const createCategorySchema = z.object({
   name: z.string().min(1, 'O campo nome é obrigatório'),
-  cellphone: z.string().min(1, 'O campo cellphone é obrigatório'),
-  email: z.string().min(1, 'O campo e-mail é obrigatório'),
+  description: z.string().min(1, 'O campo descrição é obrigatório'),
 })
 
-type CreateOrganizerForm = z.infer<typeof createOrganizerSchema>
+type CreateCategoryForm = z.infer<typeof createCategorySchema>
 
-export function NewOrganizerModal({
-  handleCloseOrganizerModal,
-}: NewOrganizerModalProps) {
+export function NewCategoryModal({
+  handleCloseCategoryModal,
+}: NewCategoryModalProps) {
   const [loading, setLoading] = useState(false)
 
-  const { register, handleSubmit, reset } = useForm<CreateOrganizerForm>({
-    resolver: zodResolver(createOrganizerSchema),
+  const { register, handleSubmit, reset } = useForm<CreateCategoryForm>({
+    resolver: zodResolver(createCategorySchema),
   })
 
-  async function handleCreateOrganizer(data: CreateOrganizerForm) {
+  async function handleCreateCategory(data: CreateCategoryForm) {
     setLoading(true)
     try {
-      const response = await api.post('/organizer/create', {
+      const response = await api.post('/categories/create', {
         name: data.name,
-        cellphone: data.cellphone,
-        email: data.email,
+        description: data.description,
       })
       console.log(response.data)
     } catch (error) {
-      console.error('Erro ao criar a ação:', error)
+      console.error('Erro ao criar a categroia:', error)
     } finally {
       setLoading(false)
       reset()
-      handleCloseOrganizerModal()
+      handleCloseCategoryModal()
     }
   }
 
@@ -55,7 +53,7 @@ export function NewOrganizerModal({
       -translate-y-1/2 transform rounded-md bg-zinc-100 px-6 py-12"
       >
         <Dialog.Title className="text-lg font-semibold">
-          Novo organizador
+          Nova categoria
         </Dialog.Title>
 
         <Dialog.Close className="absolute right-6 top-6 cursor-pointer border-0 bg-transparent leading-none text-gray-500">
@@ -66,9 +64,9 @@ export function NewOrganizerModal({
           className="mt-10 flex w-full flex-col space-y-3"
           onSubmit={(event) => {
             event.stopPropagation() // Impede a propagação do evento de submit para o formulário pai
-            handleSubmit(handleCreateOrganizer)(event)
+            handleSubmit(handleCreateCategory)(event)
           }}
-          id="new-organizer-form"
+          id="new-category-form"
         >
           <input
             type="text"
@@ -78,24 +76,18 @@ export function NewOrganizerModal({
           />
           <input
             type="text"
-            placeholder="E-mail"
+            placeholder="Descrição"
             className=" rounded border-1 border-zinc-400 bg-zinc-200 px-2 py-3 text-sm text-zinc-900 outline-none"
-            {...register('email')}
-          />
-          <input
-            type="text"
-            placeholder="Telefone"
-            className=" rounded border-1 border-zinc-400 bg-zinc-200 px-2 py-3 text-sm text-zinc-900 outline-none"
-            {...register('cellphone')}
+            {...register('description')}
           />
 
           <button
             type="submit"
-            form="new-organizer-form"
+            form="new-category-form"
             className="mb-8 w-full rounded bg-green-600 p-3 text-zinc-50 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? 'Enviando...' : 'CRIAR ORGANIZADOR'}
+            {loading ? 'Enviando...' : 'CRIAR CATEGORIA'}
           </button>
         </form>
       </Dialog.Content>

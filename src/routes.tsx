@@ -17,6 +17,7 @@ import { DonationSignUp } from './pages/app/donate/donation/donation-sign-up'
 import { DonationSuccess } from './pages/app/donate/donation/donation-success'
 import { MonetaryDonation } from './pages/app/donate/donation/monetary-donation'
 import { OtherDonation } from './pages/app/donate/donation/other-donation'
+import { EventInfo } from './pages/app/events/event-info'
 import { Events } from './pages/app/events/events'
 import { Home } from './pages/app/home/home'
 import { Profile } from './pages/app/profile/profile'
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { path: '/actions', element: <Actions /> },
       { path: '/action/:id', element: <ActionInfo /> },
       { path: '/events', element: <Events /> },
+      { path: '/event/:id', element: <EventInfo /> },
       { path: '/supporters', element: <Supporters /> },
       { path: '/profile', element: <Profile /> },
       { path: '/choose-donation', element: <ChooseDonation /> },

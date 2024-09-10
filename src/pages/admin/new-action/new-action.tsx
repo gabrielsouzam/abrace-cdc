@@ -4,11 +4,14 @@ import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Category } from '../../../@types/Category'
 import { Organizer } from '../../../@types/Organizer'
 import { api } from '../../../lib/axios'
+import { NewCategoryModal } from '../@components/new-category-modal'
 import { NewOrganizerModal } from '../@components/new-organizer-modal'
 
 // Validação do schema com zod
@@ -31,11 +34,13 @@ const createActionSchema = z.object({
 type CreateActionForm = z.infer<typeof createActionSchema>
 
 export function NewAction() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [organizers, setOrganizers] = useState<Organizer[]>()
   const [categories, setCategories] = useState<Category[]>()
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpenOrganizerModal, setIsOpenOrganizerModal] = useState(false)
+  const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
 
   const {
     handleSubmit,
@@ -46,8 +51,12 @@ export function NewAction() {
     resolver: zodResolver(createActionSchema),
   })
 
-  const handleCloseModal = useCallback(() => {
-    setIsOpen(false)
+  const handleCloseOrganizerModal = useCallback(() => {
+    setIsOpenOrganizerModal(false)
+  }, [])
+
+  const handleCloseCategoryModal = useCallback(() => {
+    setIsOpenCategoryModal(false)
   }, [])
 
   useEffect(() => {
@@ -61,11 +70,11 @@ export function NewAction() {
       setCategories(response.data)
     }
 
-    if (isOpen === false) {
+    if (isOpenOrganizerModal === false && isOpenCategoryModal === false) {
       getAllOrganizer()
       getAllCategories()
     }
-  }, [isOpen])
+  }, [isOpenOrganizerModal, isOpenCategoryModal])
 
   async function handleCreateAction(data: CreateActionForm) {
     setLoading(true)
@@ -79,6 +88,10 @@ export function NewAction() {
         value: data.value,
       })
       console.log(response.data)
+      toast.success('Ação criada com sucesso')
+      setTimeout(() => {
+        navigate('/admin/actions')
+      }, 1500)
     } catch (error) {
       console.error('Erro ao criar a ação:', error)
     } finally {
@@ -221,6 +234,21 @@ export function NewAction() {
                 O campo categoria é obrigatório
               </span>
             )}
+
+            <Dialog.Root
+              open={isOpenCategoryModal}
+              onOpenChange={setIsOpenCategoryModal}
+            >
+              <Dialog.Trigger asChild>
+                <button className=" flex w-full items-center justify-center gap-1 rounded border-1 border-zinc-400 bg-zinc-200 p-2 text-sm text-zinc-950 hover:bg-zinc-300">
+                  <span>Adicionar categoria</span>
+                </button>
+              </Dialog.Trigger>
+
+              <NewCategoryModal
+                handleCloseCategoryModal={handleCloseCategoryModal}
+              />
+            </Dialog.Root>
           </div>
           <div className="flex-1 space-y-2">
             <Controller
@@ -288,14 +316,19 @@ export function NewAction() {
               </span>
             )}
 
-            <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+            <Dialog.Root
+              open={isOpenOrganizerModal}
+              onOpenChange={setIsOpenOrganizerModal}
+            >
               <Dialog.Trigger asChild>
                 <button className=" flex w-full items-center justify-center gap-1 rounded border-1 border-zinc-400 bg-zinc-200 p-2 text-sm text-zinc-950 hover:bg-zinc-300">
                   <span>Adicionar organizador</span>
                 </button>
               </Dialog.Trigger>
 
-              <NewOrganizerModal handleCloseModal={handleCloseModal} />
+              <NewOrganizerModal
+                handleCloseOrganizerModal={handleCloseOrganizerModal}
+              />
             </Dialog.Root>
           </div>
         </div>
