@@ -1,5 +1,8 @@
-import { Star, ThumbsUp } from '@phosphor-icons/react'
+import { ThumbsUp } from '@phosphor-icons/react'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { ChevronRight, Clock, MapPin, User } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import { Tag } from './tag'
 
@@ -10,6 +13,8 @@ interface EventCardProps {
   author: string
   locale: string
   date: string
+  tag: string
+  id: string
 }
 
 export function EventCard({
@@ -19,13 +24,23 @@ export function EventCard({
   author,
   locale,
   date,
+  tag,
+  id,
 }: EventCardProps) {
-  return (
-    <div className="mb-2 w-[448px] rounded bg-zinc-50">
-      <div className="relative">
-        <img src={image} alt="Imagem do Evento" className="rounded-t" />
+  const navigate = useNavigate()
+  const dateFormated = format(new Date(date), 'dd MMM yyyy HH:mm', {
+    locale: ptBR,
+  }).toUpperCase()
 
-        <div className="absolute inset-0 bg-zinc-950 opacity-50" />
+  function handleViewEventInfo() {
+    navigate(`/event/${id}`)
+  }
+  return (
+    <div className="w-[23.75rem] rounded border-1 border-zinc-200">
+      <div className="relative">
+        <img src={image} alt="Imagem do Evento" className="mb-6" />
+
+        <div className="absolute inset-0 rounded-t bg-zinc-950 opacity-50" />
       </div>
 
       <div className="ml-4 mr-4 mt-6">
@@ -36,8 +51,7 @@ export function EventCard({
       </div>
 
       <div className="ml-4 mt-4 flex flex-row gap-2">
-        <Tag text="Doação" />
-        <Tag text="Roupas" />
+        <Tag text={tag} />
       </div>
 
       <div className="ml-4 mt-6">
@@ -56,23 +70,24 @@ export function EventCard({
         <div className="flex flex-row items-center">
           <Clock color="#22C55E" size={14} />
 
-          <p className="ml-2 text-sm font-medium text-zinc-500">{date}</p>
+          <p className="ml-2 text-sm font-medium text-zinc-500">
+            {dateFormated}
+          </p>
         </div>
       </div>
 
       <div className="ml-4 mr-4 mt-4 flex flex-row justify-between pb-2">
-        <button className="flex h-10 w-32 flex-row items-center justify-center rounded bg-green-700">
+        <button
+          onClick={handleViewEventInfo}
+          className="flex h-10 w-32 flex-row items-center justify-center rounded bg-green-700 text-zinc-50"
+        >
           Ver Mais
           <ChevronRight color="#FAFAFA" size={20} />
         </button>
 
         <div className="flex flex-row">
-          <button className="mr-4 flex h-10 w-10 items-center justify-center rounded-full bg-zinc-300">
-            <ThumbsUp color="#71717A" size={24} weight="fill" />
-          </button>
-
           <button className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-300">
-            <Star color="#71717A" size={24} weight="fill" />
+            <ThumbsUp color="#71717A" size={24} weight="fill" />
           </button>
         </div>
       </div>
