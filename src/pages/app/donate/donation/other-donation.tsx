@@ -314,7 +314,10 @@ export function OtherDonation() {
           />
         </div>
 
-        <button className="w-full rounded bg-green-700 p-2" type="submit">
+        <button
+          className="w-full rounded bg-green-700 p-2 text-zinc-50"
+          type="submit"
+        >
           CONTINUAR
         </button>
       </form>

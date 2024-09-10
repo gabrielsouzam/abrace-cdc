@@ -105,7 +105,10 @@ export function DonationSignUp() {
           }}
         />
 
-        <button type="submit" className="w-full rounded bg-green-700 py-2">
+        <button
+          type="submit"
+          className="w-full rounded bg-green-700 py-2 text-zinc-50"
+        >
           CONTINUAR
         </button>
       </form>

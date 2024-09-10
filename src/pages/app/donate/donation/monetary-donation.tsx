@@ -50,7 +50,7 @@ export function MonetaryDonation() {
       </div>
 
       <button
-        className="flex w-full items-center justify-center gap-2 rounded bg-green-700 py-2"
+        className="flex w-full items-center justify-center gap-2 rounded bg-green-700 py-2 text-zinc-50"
         onClick={handleCopyQrCode}
       >
         <Copy size={24} />

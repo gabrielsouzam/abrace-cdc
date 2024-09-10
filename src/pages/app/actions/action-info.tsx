@@ -1,4 +1,4 @@
-import { Heart, MapPin, ThumbsUp, User } from '@phosphor-icons/react'
+import { Heart, ThumbsUp, User } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -33,13 +33,6 @@ export function ActionInfo() {
           </div>
           <div>
             <span>{action?.organizerEntity.name}</span>
-            <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-green-500" />
-              <span className="text-sm text-zinc-500">
-                {action?.addressEntity.road}, {action?.addressEntity.city},{' '}
-                {action?.addressEntity.number}
-              </span>
-            </div>
           </div>
         </div>
         <div className="px-6 py-4">

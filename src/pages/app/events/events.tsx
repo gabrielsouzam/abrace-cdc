@@ -13,13 +13,13 @@ import { EventCard } from '../../_layouts/components/event-card'
 
 export function Events() {
   const [events, setEvents] = useState<Event[]>([])
-  const [citys, setCitys] = useState<Address[]>([])
+  const [streets, setStreets] = useState<Address[]>([])
   const [categories, setCategories] = useState<Category[]>([])
 
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([])
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [selectedCity, setSelectedCity] = useState<string | null>(null)
+  const [selectedStreet, setSelectedStreet] = useState<string | null>(null)
 
   useEffect(() => {
     async function getAllEvents() {
@@ -29,7 +29,7 @@ export function Events() {
     }
 
     async function getAllCategories() {
-      const response = await api.get('/categories/list', {
+      const response = await api.get('/categories/', {
         params: {
           filter: '',
         },
@@ -38,13 +38,13 @@ export function Events() {
       setCategories(response.data)
     }
 
-    async function getAllCitys() {
+    async function getAllAddress() {
       const response = await api.get('/address')
       console.log(response)
-      setCitys(response.data)
+      setStreets(response.data)
     }
 
-    getAllCitys()
+    getAllAddress()
     getAllCategories()
     getAllEvents()
   }, [])
@@ -52,18 +52,18 @@ export function Events() {
   useEffect(() => {
     let filtered = events
 
-    if (selectedCategory) {
+    if (selectedCategory && selectedCategory !== 'all') {
       filtered = filtered.filter(
-        (event) => event.category.name === selectedCategory,
+        (event) => event.category.id === selectedCategory,
       )
     }
 
-    if (selectedCity) {
-      filtered = filtered.filter((event) => event.address.road === selectedCity)
+    if (selectedStreet && selectedStreet !== 'all') {
+      filtered = filtered.filter((event) => event.address.id === selectedStreet)
     }
 
     setFilteredEvents(filtered)
-  }, [selectedCategory, selectedCity, events])
+  }, [selectedCategory, selectedStreet, events])
 
   return (
     <>
@@ -91,10 +91,19 @@ export function Events() {
                       <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                         Categorias
                       </Select.Label>
+                      <Select.Item
+                        value="all"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Todos</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
                       {categories?.map((category) => {
                         return (
                           <Select.Item
-                            value={category.name}
+                            value={category.id}
                             className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                             key={category.id}
                           >
@@ -111,9 +120,9 @@ export function Events() {
               </Select.Portal>
             </Select.Root>
 
-            <Select.Root onValueChange={setSelectedCity}>
+            <Select.Root onValueChange={setSelectedStreet}>
               <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-1 border-zinc-400 bg-zinc-50 px-3 text-base text-gray-700">
-                <Select.Value placeholder="Bairro" />
+                <Select.Value placeholder="Rua" />
                 <Select.Icon>
                   <CaretDown
                     className="text-zinc-500"
@@ -129,10 +138,19 @@ export function Events() {
                       <Select.Label className="px-6 py-2 text-sm text-zinc-900">
                         Ruas
                       </Select.Label>
-                      {citys?.map((city) => {
+                      <Select.Item
+                        value="all"
+                        className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                      >
+                        <Select.ItemText>Todos</Select.ItemText>
+                        <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                          <CheckIcon />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                      {streets?.map((city) => {
                         return (
                           <Select.Item
-                            value={city.road}
+                            value={city.id}
                             className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
                             key={city.id}
                           >
