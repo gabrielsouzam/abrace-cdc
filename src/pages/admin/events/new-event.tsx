@@ -20,7 +20,7 @@ const createEventSchema = z.object({
 
 type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 
-export function CreateEvent() {
+export function NewEvent() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -36,10 +36,7 @@ export function CreateEvent() {
   async function handleCreateEvent(data: CreateEventForm) {
     setLoading(true)
     try {
-      const response = await axios.post(
-        'https://api.meuservico.com/events',
-        data,
-      )
+      const response = await axios.post('/admin/events', { body: { data } })
       console.log(response.data)
       navigate('/events/success')
     } catch (error) {

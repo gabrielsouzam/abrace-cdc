@@ -4,15 +4,12 @@ import { AdminLayout } from './pages/_layouts/admin'
 import { AppLayout } from './pages/_layouts/app'
 import { AuthLayout } from './pages/_layouts/auth'
 import { DonateLayout } from './pages/_layouts/donate'
-
 import { ActionsAdmin } from './pages/admin/actions/actions-admin'
+import { ChooseCreate } from './pages/admin/choose-create/choose-create'
 import { Donors } from './pages/admin/donors/donors'
+import { NewEvent } from './pages/admin/events/new-event'
 import { NewAction } from './pages/admin/new-action/new-action'
 import { ActionInfo } from './pages/app/actions/action-info'
-
-import { ChooseCreate } from './pages/admin/create/choose-create'
-import { CreateEvent } from './pages/admin/create/create-event/create-event'
-
 import { Actions } from './pages/app/actions/actions'
 import { ChooseDonation } from './pages/app/donate/choose-donetion'
 import { Donation } from './pages/app/donate/donation/donation'
@@ -70,7 +67,7 @@ export const router = createBrowserRouter([
       { path: 'new-action', element: <NewAction /> },
       { path: 'actions', element: <ActionsAdmin /> },
       { path: 'create', element: <ChooseCreate /> },
-      { path: 'create/create-event', element: <CreateEvent /> },
+      { path: 'create/create-event', element: <NewEvent /> },
     ],
   },
 ])
