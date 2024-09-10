@@ -177,51 +177,57 @@ export function NewEvent() {
           </span>
         )}
 
-        {/* Campo de data */}
-        <label
-          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
-        >
-          <span className="bg-zinc-50 px-1">Data</span>
-        </label>
+        <div className="mt-4 flex w-full flex-row gap-4">
+          <div className="w-1/2">
+            {/* Campo de data */}
+            <label
+              className={`relative left-2 top-2 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
+            >
+              <span className="bg-zinc-50 px-1">Data</span>
+            </label>
+            <div
+              className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+                errors.date ? 'border-red-500' : 'border-zinc-400'
+              }`}
+            >
+              <input
+                type="date"
+                className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
+                {...register('date')}
+              />
+            </div>
+            {errors.date && (
+              <span className="text-xs text-red-500">
+                {errors.date.message}
+              </span>
+            )}
+          </div>
 
-        <div
-          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
-            errors.date ? 'border-red-500' : 'border-zinc-400'
-          }`}
-        >
-          <input
-            type="date"
-            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
-            {...register('date')}
-          />
+          <div className="w-1/2">
+            {/* Campo de horário */}
+            <label
+              className={`relative left-2 top-2 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
+            >
+              <span className="bg-zinc-50 px-1">Horário</span>
+            </label>
+            <div
+              className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+                errors.time ? 'border-red-500' : 'border-zinc-400'
+              }`}
+            >
+              <input
+                type="time"
+                className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none focus:outline-none focus:ring-0"
+                {...register('time')}
+              />
+            </div>
+            {errors.time && (
+              <span className="text-xs text-red-500">
+                {errors.time.message}
+              </span>
+            )}
+          </div>
         </div>
-
-        {errors.date && (
-          <span className="text-xs text-red-500">{errors.date.message}</span>
-        )}
-
-        {/* Campo de horário */}
-        <label
-          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
-        >
-          <span className="bg-zinc-50 px-1">Horário</span>
-        </label>
-
-        <div
-          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
-            errors.time ? 'border-red-500' : 'border-zinc-400'
-          }`}
-        >
-          <input
-            type="time"
-            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
-            {...register('time')}
-          />
-        </div>
-
-        {errors.time && (
-          <span className="text-xs text-red-500">{errors.time.message}</span>
-        )}
 
         {/* Campo de descrição */}
         <span className="relative left-2 top-2 mt-4 inline text-xs">
