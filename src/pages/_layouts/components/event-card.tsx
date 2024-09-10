@@ -1,5 +1,6 @@
 import { ThumbsUp } from '@phosphor-icons/react'
 import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { ChevronRight, Clock, MapPin, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -27,7 +28,9 @@ export function EventCard({
   id,
 }: EventCardProps) {
   const navigate = useNavigate()
-  const dateFormated = format(new Date(date), 'dd/MM/yyyy HH:mm')
+  const dateFormated = format(new Date(date), 'dd MMM yyyy HH:mm', {
+    locale: ptBR,
+  }).toUpperCase()
 
   function handleViewEventInfo() {
     navigate(`/event/${id}`)
