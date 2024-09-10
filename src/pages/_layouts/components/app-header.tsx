@@ -38,9 +38,9 @@ export function AppHeader() {
         </Link>
         <Link
           className="text-zinc-700 hover:text-zinc-900 active:font-bold"
-          to="profile"
+          to="sign-in"
         >
-          PERFIL
+          LOGIN
         </Link>
       </nav>
 

@@ -2,6 +2,7 @@ export interface Action {
   id: string
   title: string
   subtitle: string
+  value: number
   addressEntity: {
     cep: string
     city: string

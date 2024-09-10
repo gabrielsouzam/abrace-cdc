@@ -6,7 +6,7 @@ import { api } from '../../../lib/axios'
 import { ActionCardAdmin } from './components/action-card-admin'
 
 export function ActionsAdmin() {
-  const [actions, setActions] = useState<Action[]>()
+  const [actions, setActions] = useState<Action[]>([])
 
   useEffect(() => {
     async function getAllActions() {
@@ -17,6 +17,14 @@ export function ActionsAdmin() {
 
     getAllActions()
   }, [])
+
+  async function handleDeleteAction(actionId: string) {
+    await api.delete(`/action/delete/${actionId}`)
+
+    setActions((prevActions) =>
+      prevActions.filter((action) => action.id !== actionId),
+    )
+  }
 
   return (
     <>
@@ -50,6 +58,7 @@ export function ActionsAdmin() {
                     ? action.registers[0].urlImage
                     : null
                 }
+                onDelete={handleDeleteAction}
               />
             )
           })}

@@ -21,7 +21,6 @@ export function Actions() {
   useEffect(() => {
     async function getAllActions() {
       const response = await api.get('/action/')
-      console.log(response.data)
       setActions(response.data)
     }
 
@@ -49,10 +48,11 @@ export function Actions() {
 
   return (
     <>
-      <Helmet title="Actions" />
+      <Helmet title="Ações" />
       <div className="mb-20 px-14 text-zinc-900">
         <div className="mb-11 flex justify-between">
           <h1 className="text-4xl font-semibold">Ações</h1>
+
 
           <Select.Root onValueChange={setSelectedCategory}>
             <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-1 border-zinc-400 bg-zinc-50 px-3 text-base text-gray-700">
