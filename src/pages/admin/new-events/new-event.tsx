@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Select from '@radix-ui/react-select'
-import axios from 'axios'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -16,12 +15,16 @@ import { NewCategoryModal } from '../@components/new-category-modal'
 const createEventSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
-  category: z.string().nonempty('A categoria é obrigatória.'), // Use nonempty ao invés de min
-  address: z.string().min(1, 'O endereço é obrigatório.'),
+  category: z.string().min(1, 'A categoria é obrigatória.'), // Use nonempty ao invés de min
   description: z.string().optional(),
   date: z.string().min(1, 'A data é obrigatória.'),
   time: z.string().min(1, 'O horário é obrigatório.'),
-  image: z.string().optional(),
+  image: z.any().optional(),
+  street: z.string().min(1, 'O rua é obrigatório.'),
+  number: z.string().min(1, 'O numero é obrigatório.'),
+  city: z.string().min(1, 'O city é obrigatório.'),
+  complement: z.string().min(1, 'O coplmento é obrigatório.'),
+  cep: z.string().min(1, 'O cep é obrigatório.'),
 })
 
 type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
@@ -60,12 +63,12 @@ export function NewEvent() {
     console.log(data)
     setLoading(true)
     try {
-      const response = await axios.post('/api/events', {
+      const response = await api.post('/event', {
         category_id: data.category,
         title: data.title,
         caption: data.subtitle,
         description: data.description,
-        address_id: data.address,
+        address_id: 'id',
         date: data.date,
       })
       console.log(response.data)
@@ -211,23 +214,83 @@ export function NewEvent() {
         </Dialog.Root>
 
         {/* Campo de endereço */}
-        <label
-          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.address ? 'text-red-500' : 'text-zinc-900'}`}
-        >
-          <span className="bg-zinc-50 px-1">Endereço</span>
-        </label>
+        <div className="mb-2">
+          <div className="mb-2 flex gap-2">
+            <div className="flex flex-1 flex-col">
+              <input
+                data-error={!!errors.street}
+                className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                placeholder="Rua"
+                {...register('street')}
+              />
+              {errors.street && (
+                <span className="mt-1 block text-sm text-red-500">
+                  {errors.street.message}
+                </span>
+              )}
+            </div>
 
-        <div
-          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
-            errors.address ? 'border-red-500' : 'border-zinc-400'
-          }`}
-        >
-          <input
-            type="text"
-            placeholder="Endereço"
-            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
-            {...register('address')}
-          />
+            <div className="flex flex-col">
+              <input
+                data-error={!!errors.number}
+                className="rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                placeholder="Nº"
+                type="number"
+                {...register('number')}
+              />
+              {errors.number && (
+                <span className="mt-1 block text-sm text-red-500">
+                  {errors.number.message}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="mb-2 flex gap-2">
+            <div className="flex flex-1 flex-col">
+              <input
+                data-error={!!errors.city}
+                className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                placeholder="Cidade"
+                {...register('city')}
+              />
+              {errors.city && (
+                <span className="mt-1 block text-sm text-red-500">
+                  {errors.city.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+              <input
+                data-error={!!errors.cep}
+                className="rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                placeholder="CEP"
+                type="text"
+                {...register('cep')}
+              />
+              {errors.cep && (
+                <span className="mt-1 block text-sm text-red-500">
+                  {errors.cep.message}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <input
+              data-error={!!errors.complement}
+              className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+              placeholder="Complemento"
+              type="complement"
+              {...register('complement')}
+            />
+            {errors.complement && (
+              <span className="block text-sm text-red-500">
+                {errors.complement.message}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Campo de data e hora */}
