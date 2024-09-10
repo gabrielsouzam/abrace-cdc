@@ -5,19 +5,19 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
-
 // Validação do schema com zod
-const createActionSchema = z.object({
+const createEventSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
-  value: z.string().min(1, 'É necessário informar o valor'),
   description: z.string().optional(),
-  image: z.any().optional(),
+  date: z.string().min(1, 'A data é obrigatória.'),
+  time: z.string().min(1, 'O horário é obrigatório.'),
+  image: z.string().optional(),
 })
 
-type CreateActionForm = z.infer<typeof createActionSchema>
+type CreateEventForm = z.infer<typeof createEventSchema>
 
-export function NewAction() {
+export function CreateEvent() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
@@ -25,21 +25,21 @@ export function NewAction() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<CreateActionForm>({
-    resolver: zodResolver(createActionSchema),
+  } = useForm<CreateEventForm>({
+    resolver: zodResolver(createEventSchema),
   })
 
-  async function handleCreateAction(data: CreateActionForm) {
+  async function handleCreateEvent(data: CreateEventForm) {
     setLoading(true)
     try {
       const response = await axios.post(
-        'https://api.meuservico.com/actions',
+        'https://api.meuservico.com/events',
         data,
       )
       console.log(response.data)
-      navigate('/actions/success')
+      navigate('/events/success')
     } catch (error) {
-      console.error('Erro ao criar a ação:', error)
+      console.error('Erro ao criar o evento:', error)
     } finally {
       setLoading(false)
     }
@@ -47,24 +47,26 @@ export function NewAction() {
 
   return (
     <div className="mx-auto flex w-2/6 min-w-96 max-w-full flex-col justify-center">
-      <h1 className="pb-4 text-2xl font-semibold">Nova Ação</h1>
+      <h1 className="pb-4 text-2xl font-semibold">Novo evento</h1>
       <form
         className="mb-4 flex flex-col"
-        onSubmit={handleSubmit(handleCreateAction)}
+        onSubmit={handleSubmit(handleCreateEvent)}
       >
         {/* Campo de título */}
         <label
           className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
         >
-          <span className="bg-zinc-50 px-1 ">Título da Ação</span>
+          <span className="bg-zinc-50 px-1">Título do Evento</span>
         </label>
 
         <div
-          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${errors.title ? 'border-red-500' : 'border-zinc-400'}`}
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.title ? 'border-red-500' : 'border-zinc-400'
+          }`}
         >
           <input
             type="text"
-            placeholder="Título da Ação"
+            placeholder="Título do evento"
             className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
             {...register('title')}
           />
@@ -89,20 +91,51 @@ export function NewAction() {
           />
         </div>
 
+        {/* Campo de data */}
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.date ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 px-1">Data</span>
+        </label>
 
-        {/* Campo de valor */}
-        <span className="relative left-2 top-2 mt-4 inline text-xs">
-          <span className="bg-zinc-50 px-1 text-zinc-900">Valor</span>
-        </span>
-
-        <div className="mb-4 flex h-12 items-start rounded border-1 border-zinc-400 p-2 outline-none">
-        <input
-            type="text"
-            placeholder="Valor a ser arrecadado"
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.date ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
+          <input
+            type="date"
             className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
-            {...register('value')}
+            {...register('date')}
           />
         </div>
+
+        {errors.date && (
+          <span className="text-xs text-red-500">{errors.date.message}</span>
+        )}
+
+        {/* Campo de horário */}
+        <label
+          className={`relative left-2 top-2 mt-4 inline text-xs ${errors.time ? 'text-red-500' : 'text-zinc-900'}`}
+        >
+          <span className="bg-zinc-50 px-1">Horário</span>
+        </label>
+
+        <div
+          className={`mb-2 flex h-12 items-start rounded border-1 p-2 outline-none ${
+            errors.time ? 'border-red-500' : 'border-zinc-400'
+          }`}
+        >
+          <input
+            type="time"
+            className="h-full w-full bg-transparent text-sm text-zinc-900 outline-none"
+            {...register('time')}
+          />
+        </div>
+
+        {errors.time && (
+          <span className="text-xs text-red-500">{errors.time.message}</span>
+        )}
 
         {/* Campo de descrição */}
         <span className="relative left-2 top-2 mt-4 inline text-xs">
@@ -124,7 +157,7 @@ export function NewAction() {
             className="absolute inset-0 cursor-pointer opacity-0"
             {...register('image')}
           />
-          <div className="pointer-actions-none flex flex-col items-center justify-center">
+          <div className="pointer-events-none flex flex-col items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12 text-gray-400"
@@ -145,13 +178,13 @@ export function NewAction() {
           </div>
         </div>
 
-        {/* Botão de criar actiono */}
+        {/* Botão de criar evento */}
         <button
           type="submit"
           className="mb-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600"
           disabled={loading}
         >
-          {loading ? 'Enviando...' : 'CRIAR AÇÃO'}
+          {loading ? 'Enviando...' : 'CRIAR EVENTO'}
         </button>
       </form>
     </div>
