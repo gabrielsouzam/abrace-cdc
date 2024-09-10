@@ -54,7 +54,10 @@ export function ActionCard({
       const response = await api.get(`/action/amount/${id}`)
 
       setAmount(response.data)
-      setPercentual((amount / value) * 100)
+
+      const percentual = Math.min((amount / value) * 100, 100)
+
+      setPercentual(percentual)
     }
 
     getAmount()

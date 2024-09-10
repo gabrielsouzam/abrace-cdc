@@ -3,6 +3,10 @@ interface LineLevelProps {
 }
 
 export function LineLevel({ level }: LineLevelProps) {
+  if (level > 100) {
+    level = 100
+  }
+
   return (
     <div className="relative h-1 w-[18rem] bg-green-200">
       <div
