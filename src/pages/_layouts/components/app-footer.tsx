@@ -1,64 +1,76 @@
+import { Link } from 'react-router-dom'
+
+import Chat from '../../../assets/chat.svg'
+import Email from '../../../assets/email.svg'
+import InstagramIcon from '../../../assets/InstagramIcon.svg'
+import Phone from '../../../assets/phone.svg'
+import WhatsAppIcon from '../../../assets/WhatsAppIcon.svg'
+import Logo from './../../../assets/iconName.svg'
+
 export function AppFooter() {
   return (
     <footer className="mt-20 border-t-1 border-zinc-200 bg-zinc-50 px-32 py-8 text-green-700">
       <div className="flex justify-between">
         {/* Logo and Description */}
         <div>
-          <h2 className="text-xl font-bold">Logo</h2>
-          <p className="mt-4 max-w-xs">
-            A new way to make the payments easy, reliable and secure.
+          <div className="flex flex-col items-center">
+            <img src={Logo} alt="Logo" className="h-32 w-32" />
+          </div>
+          <p className="mt-2 max-w-sm text-center text-xs text-green-700">
+            Nos dedicamos a oferecer apoio e esperança para aqueles em situação
+            de vulnerabilidade.
           </p>
         </div>
 
         {/* Useful Links */}
         <div>
-          <h3 className="mb-4 text-lg font-semibold">Useful Links</h3>
+          <h3 className="mb-4 text-lg font-semibold">Mapa do site</h3>
+
           <ul className="space-y-2">
             <li>
-              <a href="#" className="hover:underline">
-                Content
-              </a>
+              <Link
+                title="quemSomos"
+                className="hover:underline"
+                to="/who-we-are"
+              >
+                Quem somos
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                How it Works
-              </a>
+              <Link className="hover:underline" to="actions">
+                Ações
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                Create
-              </a>
+              <Link className="hover:underline" to="events">
+                Eventos
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                Explore
-              </a>
+              <Link className="hover:underline" to="supporters">
+                Apoiadores
+              </Link>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                Terms & Services
-              </a>
+              <Link className="hover:underline" to="profile">
+                Perfil
+              </Link>
             </li>
           </ul>
         </div>
 
         {/* Community Links */}
         <div>
-          <h3 className="mb-4 text-lg font-semibold">Community</h3>
+          <h3 className="mb-4 text-lg font-semibold">Comunidade</h3>
           <ul className="space-y-2">
             <li>
               <a href="#" className="hover:underline">
-                Help Center
+                Central de ajuda
               </a>
             </li>
             <li>
               <a href="#" className="hover:underline">
-                Partners
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Suggestions
+                FAQ
               </a>
             </li>
             <li>
@@ -68,7 +80,7 @@ export function AppFooter() {
             </li>
             <li>
               <a href="#" className="hover:underline">
-                Newsletters
+                Sugestões
               </a>
             </li>
           </ul>
@@ -76,17 +88,31 @@ export function AppFooter() {
 
         {/* Partner Links */}
         <div>
-          <h3 className="mb-4 text-lg font-semibold">Partner</h3>
+          <h3 className="mb-4 text-lg font-semibold">Precisa de ajuda?</h3>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="hover:underline">
-                Our Partner
-              </a>
+              <div className="flex flex-row items-center gap-2">
+                <img src={Chat} alt="Ícone chat" className="w-4" />
+                <a href="#" className="hover:underline">
+                  Chat online
+                </a>
+              </div>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                Become a Partner
-              </a>
+              <div className="flex flex-row items-center gap-2">
+                <img src={Email} alt="Ícone email" className="w-4" />
+                <a href="#" className="hover:underline">
+                  Email
+                </a>
+              </div>
+            </li>
+            <li>
+              <div className="flex flex-row items-center gap-2">
+                <img src={Phone} alt="Ícone telefone" className="w-4" />
+                <a href="#" className="hover:underline">
+                  Fale conosco
+                </a>
+              </div>
             </li>
           </ul>
         </div>
@@ -98,17 +124,19 @@ export function AppFooter() {
           &copy; 2024 Casa da Caridade. Todos os direitos reservados.
         </p>
         <div className="flex space-x-4">
-          <a href="#" aria-label="Instagram" className="hover:text-gray-400">
-            <i className="fab fa-instagram"></i>
+          <a
+            href="https://www.instagram.com/casadacaridadequixada/"
+            aria-label="Instagram"
+            className="hover:text-gray-400"
+          >
+            <img className="w-6" src={InstagramIcon} alt="Ícone Instagram" />
           </a>
-          <a href="#" aria-label="Facebook" className="hover:text-gray-400">
-            <i className="fab fa-facebook"></i>
-          </a>
-          <a href="#" aria-label="Twitter" className="hover:text-gray-400">
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a href="#" aria-label="LinkedIn" className="hover:text-gray-400">
-            <i className="fab fa-linkedin"></i>
+          <a
+            href="https://www.instagram.com/casadacaridadequixada/"
+            aria-label="WhatsApp"
+            className="hover:text-gray-400"
+          >
+            <img className="w-6" src={WhatsAppIcon} alt="Ícone WhatsApp" />
           </a>
         </div>
       </div>
