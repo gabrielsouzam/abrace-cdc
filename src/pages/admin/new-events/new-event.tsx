@@ -4,6 +4,7 @@ import * as Select from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -30,6 +31,7 @@ const createEventSchema = z.object({
 type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 
 export function NewEvent() {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
@@ -59,20 +61,29 @@ export function NewEvent() {
   })
 
   async function handleCreateEvent(data: CreateEventForm) {
-    console.log('entrou')
-    console.log(data)
+    const dateFormated = `${data.date}T${data.time}:00`
     setLoading(true)
     try {
-      const response = await api.post('/event', {
+      const responseAddress = await api.post('/address', {
+        road: data.street,
+        number: data.number,
+        city: data.city,
+        complement: data.complement,
+        cep: data.cep,
+      })
+
+      const response = await api.post('/api/events', {
         category_id: data.category,
         title: data.title,
         caption: data.subtitle,
         description: data.description,
-        address_id: 'id',
-        date: data.date,
+        address_id: responseAddress.data.id,
+        dateTime: dateFormated,
+        organizer_id: 'af1c293f-c021-4848-bbb7-17cab61cbdb9',
       })
       console.log(response.data)
-      toast.success('Ação criada com sucesso')
+      toast.success('Evento criado com sucesso')
+      navigate('/admin/events')
     } catch (error) {
       console.error('Erro ao criar o evento:', error)
     } finally {
@@ -214,12 +225,17 @@ export function NewEvent() {
         </Dialog.Root>
 
         {/* Campo de endereço */}
-        <div className="mb-2">
+        <div>
           <div className="mb-2 flex gap-2">
             <div className="flex flex-1 flex-col">
+              <label
+                className={`relative left-2 top-2 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+              >
+                <span className="bg-zinc-50 px-1">Rua</span>
+              </label>
               <input
                 data-error={!!errors.street}
-                className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                className="w-full rounded border-1 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
                 placeholder="Rua"
                 {...register('street')}
               />
@@ -231,9 +247,15 @@ export function NewEvent() {
             </div>
 
             <div className="flex flex-col">
+              <label
+                className={`relative left-2 top-2 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+              >
+                <span className="bg-zinc-50 px-1">Número</span>
+              </label>
+
               <input
                 data-error={!!errors.number}
-                className="rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                className="rounded border-1 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
                 placeholder="Nº"
                 type="number"
                 {...register('number')}
@@ -248,9 +270,15 @@ export function NewEvent() {
 
           <div className="mb-2 flex gap-2">
             <div className="flex flex-1 flex-col">
+              <label
+                className={`relative left-2 top-2 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+              >
+                <span className="bg-zinc-50 px-1">Cidade</span>
+              </label>
+
               <input
                 data-error={!!errors.city}
-                className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                className="w-full rounded border-1 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
                 placeholder="Cidade"
                 {...register('city')}
               />
@@ -262,9 +290,14 @@ export function NewEvent() {
             </div>
 
             <div className="flex flex-col">
+              <label
+                className={`relative left-2 top-2 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+              >
+                <span className="bg-zinc-50 px-1">cep</span>
+              </label>
               <input
                 data-error={!!errors.cep}
-                className="rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+                className="rounded border-1 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
                 placeholder="CEP"
                 type="text"
                 {...register('cep')}
@@ -277,10 +310,16 @@ export function NewEvent() {
             </div>
           </div>
 
+          <label
+            className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+          >
+            <span className="bg-zinc-50 px-1">Complemento</span>
+          </label>
+
           <div>
             <input
               data-error={!!errors.complement}
-              className="w-full rounded border-2 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
+              className="w-full rounded border-1 border-zinc-400 px-4 py-3 data-[error=true]:border-red-500"
               placeholder="Complemento"
               type="complement"
               {...register('complement')}

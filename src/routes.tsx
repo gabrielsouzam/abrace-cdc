@@ -7,6 +7,7 @@ import { DonateLayout } from './pages/_layouts/donate'
 import { ActionsAdmin } from './pages/admin/actions/actions-admin'
 import { ChooseCreate } from './pages/admin/choose-create/choose-create'
 import { Donors } from './pages/admin/donors/donors'
+import { EventsAdmin } from './pages/admin/events/events-admin'
 import { NewAction } from './pages/admin/new-action/new-action'
 import { NewEvent } from './pages/admin/new-events/new-event'
 import { ActionInfo } from './pages/app/actions/action-info'
@@ -69,6 +70,7 @@ export const router = createBrowserRouter([
       { path: 'new-action', element: <NewAction /> },
       { path: 'actions', element: <ActionsAdmin /> },
       { path: 'choose-create', element: <ChooseCreate /> },
+      { path: 'events', element: <EventsAdmin /> },
       { path: 'new-event', element: <NewEvent /> },
     ],
   },
