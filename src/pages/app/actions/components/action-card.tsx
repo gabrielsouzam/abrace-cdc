@@ -23,6 +23,7 @@ interface ActionCardProps {
 
 interface CustomJwtPayload extends JwtPayload {
   userId?: string
+  userRole?: string
 }
 
 export function ActionCard({
