@@ -17,6 +17,7 @@ interface EventCardProps {
   date: string
   tag: string
   id: string
+  onDelete: (idEvent: string) => void
 }
 
 export function EventCardAdmin({
@@ -28,6 +29,7 @@ export function EventCardAdmin({
   date,
   tag,
   id,
+  onDelete,
 }: EventCardProps) {
   const navigate = useNavigate()
   function handleViewEventInfo() {
@@ -92,7 +94,7 @@ export function EventCardAdmin({
             </button>
           </Dialog.Trigger>
 
-          <DeleteEventModal />
+          <DeleteEventModal eventId={id} onDelete={onDelete} />
         </Dialog.Root>
       </div>
     </div>
