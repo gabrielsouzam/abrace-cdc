@@ -78,7 +78,7 @@ export function EventCardAdmin({
           </p>
         </div>
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 px-2 py-2">
         <button
           onClick={handleViewEventInfo}
           className="flex items-center justify-center gap-1 rounded border-1 border-green-700 bg-transparent p-2 text-sm text-green-700"

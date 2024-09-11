@@ -8,15 +8,19 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { Address } from '../../../@types/Address'
 import { Category } from '../../../@types/Category'
+import { Organizer } from '../../../@types/Organizer'
 import { api } from '../../../lib/axios'
 import { NewCategoryModal } from '../@components/new-category-modal'
+import { NewOrganizerModal } from '../@components/new-organizer-modal'
 
 // Validação do schema com zod
 const createEventSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório.'),
   subtitle: z.string().optional(),
   category: z.string().min(1, 'A categoria é obrigatória.'), // Use nonempty ao invés de min
+  organizer: z.string().min(1, 'O organizador é obrigatório.'),
   description: z.string().optional(),
   date: z.string().min(1, 'A data é obrigatória.'),
   time: z.string().min(1, 'O horário é obrigatório.'),
@@ -33,23 +37,37 @@ type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 export function NewEvent() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
-  const [categories, setCategories] = useState<Category[]>([])
+  const [organizers, setOrganizers] = useState<Organizer[]>()
+  const [categories, setCategories] = useState<Category[]>()
+  const [address, setAddress] = useState<Address[]>([])
+
+  const [isOpenOrganizerModal, setIsOpenOrganizerModal] = useState(false)
   const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false)
+
+  const handleCloseOrganizerModal = useCallback(() => {
+    setIsOpenOrganizerModal(false)
+  }, [])
 
   const handleCloseCategoryModal = useCallback(() => {
     setIsOpenCategoryModal(false)
   }, [])
 
   useEffect(() => {
+    async function getAllOrganizer() {
+      const response = await api.get('/organizer/')
+      setOrganizers(response.data)
+    }
+
     async function getAllCategories() {
       const response = await api.get('/categories/')
       setCategories(response.data)
     }
 
-    if (isOpenCategoryModal === false) {
+    if (isOpenOrganizerModal === false && isOpenCategoryModal === false) {
+      getAllOrganizer()
       getAllCategories()
     }
-  }, [isOpenCategoryModal])
+  }, [isOpenOrganizerModal, isOpenCategoryModal])
 
   const {
     handleSubmit,
@@ -60,10 +78,19 @@ export function NewEvent() {
     resolver: zodResolver(createEventSchema),
   })
 
-  async function handleCreateEvent(data: CreateEventForm) {
-    const dateFormated = `${data.date}T${data.time}:00`
-    setLoading(true)
-    try {
+  async function getAddresId(data: CreateEventForm) {
+    const response = await api.get('/address')
+    setAddress(response.data)
+    const addressId = address.find(
+      (address) =>
+        address.road === data.street &&
+        address.number === Number(data.number) &&
+        address.city === data.city &&
+        address.complement === data.complement &&
+        address.cep === data.cep,
+    )
+
+    if (!addressId) {
       const responseAddress = await api.post('/address', {
         road: data.street,
         number: data.number,
@@ -71,15 +98,28 @@ export function NewEvent() {
         complement: data.complement,
         cep: data.cep,
       })
+      console.log(responseAddress.data.id)
+      return responseAddress.data.id
+    }
+
+    console.log(addressId.id)
+    return addressId.id
+  }
+
+  async function handleCreateEvent(data: CreateEventForm) {
+    const dateFormated = `${data.date}T${data.time}:00`
+    setLoading(true)
+    try {
+      const addressId = await getAddresId(data)
 
       const response = await api.post('/api/events', {
         category_id: data.category,
         title: data.title,
         caption: data.subtitle,
         description: data.description,
-        address_id: responseAddress.data.id,
+        address_id: addressId,
         dateTime: dateFormated,
-        organizer_id: 'af1c293f-c021-4848-bbb7-17cab61cbdb9',
+        organizer_id: data.organizer,
       })
       console.log(response.data)
       toast.success('Evento criado com sucesso')
@@ -223,6 +263,91 @@ export function NewEvent() {
             handleCloseCategoryModal={handleCloseCategoryModal}
           />
         </Dialog.Root>
+
+        {/* Campo de organizador */}
+        <div>
+          <label
+            className={`relative left-2 top-2 mt-4 inline text-xs ${errors.title ? 'text-red-500' : 'text-zinc-900'}`}
+          >
+            <span className="bg-zinc-50 px-1">Organizador</span>
+          </label>
+          <Controller
+            control={control}
+            name="organizer"
+            render={({ field }) => {
+              return (
+                <Select.Root onValueChange={field.onChange} value={field.value}>
+                  <Select.Trigger
+                    data-error={!!errors.organizer}
+                    className="inline-flex w-full items-center justify-between gap-1 rounded border-1 border-solid 
+                border-zinc-400 bg-transparent px-4 py-3 text-sm text-zinc-900 outline-none focus:shadow-[0_0_0_1px]
+                focus:shadow-white data-[error=true]:border-red-500 data-[placeholder]:text-gray-400"
+                    aria-label="Food"
+                  >
+                    <Select.Value placeholder="Seleciona um organizador" />
+                    <Select.Icon className="text-zinc-900 ">
+                      <ChevronDownIcon
+                        data-error={!!errors.organizer}
+                        className="text-zinc-400 data-[error=true]:text-red-500"
+                      />
+                    </Select.Icon>
+                  </Select.Trigger>
+                  <Select.Portal>
+                    <Select.Content className=" overflow-hidden rounded-md bg-zinc-100 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+                      <Select.Viewport className="p-1">
+                        <Select.Group>
+                          <Select.Label className="px-6 py-2 text-sm text-zinc-900">
+                            Organizadores
+                          </Select.Label>
+                          {organizers?.map((organizer) => (
+                            <Select.Item
+                              key={organizer.id}
+                              value={organizer.id}
+                              className="relative flex h-7 select-none items-center rounded px-6 text-sm text-zinc-900 hover:cursor-pointer data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-300 data-[disabled]:text-zinc-300 data-[highlighted]:text-zinc-900 data-[highlighted]:outline-none"
+                            >
+                              <Select.ItemText>
+                                {organizer.name}
+                              </Select.ItemText>
+                              <Select.ItemIndicator className="absolute left-1 inline-flex h-4 w-4 items-center justify-center">
+                                <CheckIcon />
+                              </Select.ItemIndicator>
+                            </Select.Item>
+                          ))}
+                        </Select.Group>
+
+                        <Select.Separator className="bg-violet6 m-[5px] h-[1px]" />
+                      </Select.Viewport>
+                      <Select.ScrollDownButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-violet-500">
+                        <ChevronDownIcon />
+                      </Select.ScrollDownButton>
+                    </Select.Content>
+                  </Select.Portal>
+                </Select.Root>
+              )
+            }}
+          />
+
+          {errors.organizer && (
+            <span className="ml-1 text-xs text-red-500">
+              O campo organizador é obrigatório
+            </span>
+          )}
+
+          <Dialog.Root
+            open={isOpenOrganizerModal}
+            onOpenChange={setIsOpenOrganizerModal}
+          >
+            <Dialog.Trigger asChild>
+              <button className="mt-2 flex w-full items-center justify-center gap-1 rounded border-1 border-zinc-400 bg-zinc-200 p-2 text-sm text-zinc-950 hover:bg-zinc-300">
+                <span>Adicionar organizador</span>
+              </button>
+            </Dialog.Trigger>
+
+            <NewOrganizerModal
+              handleCloseOrganizerModal={handleCloseOrganizerModal}
+            />
+          </Dialog.Root>
+        </div>
 
         {/* Campo de endereço */}
         <div>
