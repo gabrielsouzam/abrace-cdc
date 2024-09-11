@@ -24,8 +24,8 @@ export const isAdminAuthenticated = (): boolean => {
 
     console.log(decodedToken)
 
-    if (decodedToken.userRole === 'admin') {
-      return true
+    if (decodedToken.userRole === 'user') {
+      return false
     }
 
     return true
