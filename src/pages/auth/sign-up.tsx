@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { api } from '../../lib/axios'
@@ -18,6 +20,8 @@ type SignUpForm = z.infer<typeof signUpForm>
 export function SignUp() {
   const navigate = useNavigate()
 
+  const [loading, setLoading] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -27,14 +31,21 @@ export function SignUp() {
   })
 
   async function handleSignUp(data: SignUpForm) {
-    await api.post('/auth/register-user', {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      password: data.password,
-    })
-
-    navigate('/sign-in')
+    setLoading(true)
+    try {
+      await api.post('/auth/register-user', {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+      })
+    } catch (error) {
+      console.error('Erro ao criar a ação:', error)
+    } finally {
+      setLoading(false)
+      toast.success('Conta cadastrado com sucesso')
+      navigate('/sign-in')
+    }
   }
 
   return (
@@ -104,9 +115,10 @@ export function SignUp() {
           )}
           <button
             type="submit"
-            className="mb-8 mt-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600"
+            disabled={loading}
+            className="mb-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            CADASTRAR
+            {loading ? 'Enviando...' : 'CADASTRAR'}
           </button>
         </form>
 
