@@ -124,6 +124,13 @@ export function AppFooter() {
           &copy; 2024 Casa da Caridade. Todos os direitos reservados.
         </p>
         <div className="flex space-x-4">
+          <Link
+            className="text-green-700 hover:text-green-600 active:font-bold"
+            to="/admin/choose-create"
+          >
+            Admin
+          </Link>
+
           <a
             href="https://www.instagram.com/casadacaridadequixada/"
             aria-label="Instagram"
