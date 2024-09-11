@@ -120,6 +120,7 @@ export function ActionsAdmin() {
                   subtile={action.subtitle}
                   category={action.categoryEntity.name}
                   id={action.id}
+                  value={action.value}
                   actionImage={
                     action.registers.length > 0 && action.registers[0].urlImage
                       ? action.registers[0].urlImage
