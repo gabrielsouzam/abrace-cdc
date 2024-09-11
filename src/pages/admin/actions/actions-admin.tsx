@@ -45,6 +45,15 @@ export function ActionsAdmin() {
 
     setFilteredActions(filtered)
   }, [selectedCategory, actions])
+
+  async function handleDeleteAction(actionId: string) {
+    await api.delete(`/action/delete/${actionId}`)
+
+    setActions((prevActions) =>
+      prevActions.filter((action) => action.id !== actionId),
+    )
+  }
+
   return (
     <>
       <Helmet title="Actions" />
@@ -116,6 +125,7 @@ export function ActionsAdmin() {
                       ? action.registers[0].urlImage
                       : null
                   }
+                  onDelete={handleDeleteAction}
                 />
               )
             })}

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import Logo from './../../../assets/logo.svg'
 
-export function AppHeaderAdmin() {
+export function AdminHeader() {
   return (
     <header className=" mb-20 flex items-center justify-between border-b-1 border-zinc-200 px-32 py-2">
       <Link to="/">

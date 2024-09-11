@@ -12,6 +12,7 @@ interface ActionCardProps {
   subtile: string
   category: string
   actionImage: string | null
+  onDelete: (actionId: string) => void
 }
 
 export function ActionCardAdmin({
@@ -20,6 +21,7 @@ export function ActionCardAdmin({
   category,
   actionImage,
   id,
+  onDelete,
 }: ActionCardProps) {
   const navigate = useNavigate()
   let urlImage = cardImage
@@ -67,7 +69,7 @@ export function ActionCardAdmin({
               </button>
             </Dialog.Trigger>
 
-            <DeleteActionModal />
+            <DeleteActionModal actionId={id} onDelete={onDelete} />
           </Dialog.Root>
         </div>
       </div>
