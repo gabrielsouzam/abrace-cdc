@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as Select from '@radix-ui/react-select'
+import Cookies from 'js-cookie'
 import { CheckIcon, ChevronDownIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -36,6 +37,7 @@ type CreateEventForm = z.infer<typeof createEventSchema> & { category: string }
 
 export function NewEvent() {
   const navigate = useNavigate()
+  const token = Cookies.get('authToken')
   const [loading, setLoading] = useState(false)
   const [organizers, setOrganizers] = useState<Organizer[]>()
   const [categories, setCategories] = useState<Category[]>()
@@ -79,7 +81,11 @@ export function NewEvent() {
   })
 
   async function getAddresId(data: CreateEventForm) {
-    const response = await api.get('/address')
+    const response = await api.get('/address', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     setAddress(response.data)
     const addressId = address.find(
       (address) =>
@@ -91,13 +97,21 @@ export function NewEvent() {
     )
 
     if (!addressId) {
-      const responseAddress = await api.post('/address', {
-        road: data.street,
-        number: data.number,
-        city: data.city,
-        complement: data.complement,
-        cep: data.cep,
-      })
+      const responseAddress = await api.post(
+        '/address',
+        {
+          road: data.street,
+          number: data.number,
+          city: data.city,
+          complement: data.complement,
+          cep: data.cep,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       console.log(responseAddress.data.id)
       return responseAddress.data.id
     }
@@ -112,15 +126,23 @@ export function NewEvent() {
     try {
       const addressId = await getAddresId(data)
 
-      const response = await api.post('/api/events', {
-        category_id: data.category,
-        title: data.title,
-        caption: data.subtitle,
-        description: data.description,
-        address_id: addressId,
-        dateTime: dateFormated,
-        organizer_id: data.organizer,
-      })
+      const response = await api.post(
+        '/api/events',
+        {
+          category_id: data.category,
+          title: data.title,
+          caption: data.subtitle,
+          description: data.description,
+          address_id: addressId,
+          dateTime: dateFormated,
+          organizer_id: data.organizer,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
       console.log(response.data)
       toast.success('Evento criado com sucesso')
       navigate('/admin/events')
