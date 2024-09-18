@@ -1,5 +1,6 @@
 import { CaretDown } from '@phosphor-icons/react'
 import * as Select from '@radix-ui/react-select'
+import Cookies from 'js-cookie'
 import { CheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -12,6 +13,7 @@ import { api } from '../../../lib/axios'
 import { EventCard } from '../../_layouts/components/event-card'
 
 export function Events() {
+  const token = Cookies.get('token')
   const [events, setEvents] = useState<Event[]>([])
   const [streets, setStreets] = useState<Address[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -39,7 +41,11 @@ export function Events() {
     }
 
     async function getAllAddress() {
-      const response = await api.get('/address')
+      const response = await api.get('/address', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       console.log(response)
       setStreets(response.data)
     }
