@@ -65,6 +65,14 @@ export function EventsAdmin() {
     setFilteredEvents(filtered)
   }, [selectedCategory, selectedStreet, events])
 
+  async function handleDeleteEvent(eventId: string) {
+    await api.delete(`/api/events/${eventId}`)
+
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== eventId),
+    )
+  }
+
   return (
     <>
       <Helmet title="Events" />
@@ -179,6 +187,7 @@ export function EventsAdmin() {
             {filteredEvents?.map((event) => {
               return (
                 <EventCardAdmin
+                  onDelete={handleDeleteEvent}
                   image={Doacao}
                   title={event.title}
                   subtitle={event.caption}

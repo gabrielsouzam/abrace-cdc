@@ -23,6 +23,7 @@ interface ActionCardProps {
 
 interface CustomJwtPayload extends JwtPayload {
   userId?: string
+  userRole?: string
 }
 
 export function ActionCard({
@@ -106,7 +107,9 @@ export function ActionCard({
 
           <div className="mb-4 flex items-center justify-between">
             <LineLevel level={percentual} />
-            <span className="text-sm text-zinc-800">{percentual}%</span>
+            <span className="text-sm text-zinc-800">
+              {percentual.toFixed(1)}%
+            </span>
           </div>
 
           <div className="flex justify-end gap-2">

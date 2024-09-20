@@ -26,7 +26,6 @@ export function Actions() {
 
     async function getAllCategories() {
       const response = await api.get('/categories/')
-      console.log(response)
       setCategories(response.data)
     }
 
@@ -52,7 +51,6 @@ export function Actions() {
       <div className="mb-20 px-14 text-zinc-900">
         <div className="mb-11 flex justify-between">
           <h1 className="text-4xl font-semibold">Ações</h1>
-
 
           <Select.Root onValueChange={setSelectedCategory}>
             <Select.Trigger className="flex h-10 w-72 items-center justify-between rounded border-1 border-zinc-400 bg-zinc-50 px-3 text-base text-gray-700">
@@ -114,6 +112,7 @@ export function Actions() {
                   subtile={action.subtitle}
                   category={action.categoryEntity.name}
                   id={action.id}
+                  value={action.value}
                   actionImage={
                     action.registers.length > 0 && action.registers[0].urlImage
                       ? action.registers[0].urlImage

@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Cookies from 'js-cookie'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,6 +16,8 @@ const signInForm = z.object({
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
   const navigate = useNavigate()
   const {
     register,
@@ -23,20 +26,29 @@ export function SignIn() {
   } = useForm<SignInForm>({ resolver: zodResolver(signInForm) })
 
   async function handleSignIn(data: SignInForm) {
-    const response = await api.post('/auth/login', {
-      email: data.email,
-      password: data.password,
-    })
+    setLoading(true)
+    try {
+      const response = await api.post('/auth/login', {
+        email: data.email,
+        password: data.password,
+      })
 
-    const token = response.data.token
-    const expirationDate = new Date(new Date().getTime() + 60 * 60 * 24000 * 7) // 7 dias
+      const token = response.data.token
+      const expirationDate = new Date(
+        new Date().getTime() + 60 * 60 * 24000 * 7,
+      ) // 7 dias
 
-    Cookies.set('authToken', token, { expires: expirationDate })
+      Cookies.set('authToken', token, { expires: expirationDate })
 
-    const tokenRetriced = Cookies.get('authToken')
-    console.log(tokenRetriced)
-
-    navigate('/')
+      const tokenRetriced = Cookies.get('authToken')
+      console.log(tokenRetriced)
+      navigate('/')
+    } catch (error) {
+      console.error('Erro ao criar a ação:', error)
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -83,13 +95,19 @@ export function SignIn() {
 
           <button
             type="submit"
-            className="mb-8 w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600"
+            disabled={loading}
+            className=" w-full rounded bg-green-700 p-3 text-zinc-50 hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            ENTRAR
+            {loading ? 'Enviando...' : 'ENTRAR'}
           </button>
+          {error && (
+            <span className="mb-2 mt-2 text-sm text-red-500">
+              Senha ou e-mail inválido.
+            </span>
+          )}
         </form>
 
-        <span className="text-center text-sm text-zinc-400">
+        <span className="mt-8 text-center text-sm text-zinc-400">
           Ainda não tem conta?{' '}
           <Link to="/sign-up" className="text-green-700">
             Criar conta

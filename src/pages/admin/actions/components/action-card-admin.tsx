@@ -1,7 +1,9 @@
 import { CaretRight } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { api } from '../../../../lib/axios'
 import cardImage from './../../../../assets/donation-card-image.svg'
 import { DeleteActionModal } from './delete-action-modal'
 import { LineLevel } from './line-level'
@@ -11,6 +13,7 @@ interface ActionCardProps {
   id: string
   subtile: string
   category: string
+  value: number
   actionImage: string | null
   onDelete: (actionId: string) => void
 }
@@ -22,8 +25,12 @@ export function ActionCardAdmin({
   actionImage,
   id,
   onDelete,
+  value,
 }: ActionCardProps) {
   const navigate = useNavigate()
+
+  const [amount, setAmount] = useState(0)
+  const [percentual, setPercentual] = useState(0)
   let urlImage = cardImage
 
   if (actionImage) {
@@ -33,6 +40,20 @@ export function ActionCardAdmin({
   function handleViewActionInfo() {
     navigate(`/action/${id}`)
   }
+
+  useEffect(() => {
+    async function getAmount() {
+      const response = await api.get(`/action/amount/${id}`)
+
+      setAmount(response.data)
+
+      const percentual = Math.min((amount / value) * 100, 100)
+
+      setPercentual(percentual)
+    }
+
+    getAmount()
+  }, [id, value, amount])
 
   return (
     <div className="w-[23.75rem] rounded border-1 border-zinc-200">
@@ -51,8 +72,10 @@ export function ActionCardAdmin({
         </div>
 
         <div className="mb-4 flex items-center justify-between">
-          <LineLevel level={50} />
-          <span className="text-sm text-zinc-800">50%</span>
+          <LineLevel level={percentual} />
+          <span className="text-sm text-zinc-800">
+            {percentual.toFixed(1)}%
+          </span>
         </div>
 
         <div className="flex justify-end gap-2">

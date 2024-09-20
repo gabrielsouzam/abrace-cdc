@@ -30,11 +30,10 @@ export function NewCategoryModal({
   async function handleCreateCategory(data: CreateCategoryForm) {
     setLoading(true)
     try {
-      const response = await api.post('/categories/create', {
+      await api.post('/categories/create', {
         name: data.name,
         description: data.description,
       })
-      console.log(response.data)
     } catch (error) {
       console.error('Erro ao criar a categroia:', error)
     } finally {
